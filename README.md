@@ -30,11 +30,11 @@ use mercy::{
 };
 
 fn main() {
-    // Encode string "Hifumi Technologies"
-    mercy_encode("base64", "Hifumi Technologies");
+    // Encode string "Umiko Security"
+    mercy_encode("base64", "Umiko Security");
     
-    // Decode string "TWVsYW5jaG9seSBMYWJz"
-    mercy_decode("base64", "SGlmdW1pIFRlY2hub2xvZ2llcw==");
+    // Decode string "VW1pa28gU2VjdXJpdHk="
+    mercy_decode("base64", "VW1pa28gU2VjdXJpdHk=");
 }
 ```
 

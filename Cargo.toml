@@ -7,7 +7,7 @@ license = "BSD-2-Clause"
 categories = ["cryptography", "encoding"]
 keywords = ["hashing", "decode", "encode", "cracking"]
 description = "Mercy is a public Rust crate created to assist with building cybersecurity frameworks, assessment tools, and numerous other projects"
-repository = "https://github.com/hifumitech/mercy"
+repository = "https://github.com/umikosec/mercy"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

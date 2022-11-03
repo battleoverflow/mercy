@@ -1,5 +1,5 @@
 /*
-    Hifumi Technologies (https://github.com/hifumitech)
+    Umiko Security (https://github.com/umikosec)
     File: src/lib.rs
 
     Author(s): {
@@ -29,7 +29,7 @@ use sys_info::{
 
 pub fn mercy_source() -> String {
     const VERSION: &str = "1.1.11";
-    const AUTHOR: &str = "Hifumi Technologies (https://github.com/hifumitech)";
+    const AUTHOR: &str = "Umiko Security (https://github.com/umikosec)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
 
