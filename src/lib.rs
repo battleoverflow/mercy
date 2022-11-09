@@ -1,5 +1,5 @@
 /*
-    Umiko Security (https://github.com/umikosec)
+    Umiko Labs (https://github.com/umikolabs)
     File: src/lib.rs
 
     Author(s): {
@@ -29,7 +29,7 @@ use sys_info::{
 
 pub fn mercy_source() -> String {
     const VERSION: &str = "1.1.11";
-    const AUTHOR: &str = "Umiko Security (https://github.com/umikosec)";
+    const AUTHOR: &str = "Umiko Labs (https://github.com/umikolabs)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
 
