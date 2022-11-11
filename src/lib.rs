@@ -28,7 +28,7 @@ use sys_info::{
 };
 
 pub fn mercy_source() -> String {
-    const VERSION: &str = "1.1.11";
+    const VERSION: &str = "1.1.12";
     const AUTHOR: &str = "Umiko Labs (https://github.com/umikolabs)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
