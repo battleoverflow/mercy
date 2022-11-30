@@ -30,11 +30,11 @@ use mercy::{
 };
 
 fn main() {
-    // Encode string "Umiko Labs"
-    mercy_encode("base64", "Umiko Labs");
+    // Encode string "CyberSuki"
+    mercy_encode("base64", "CyberSuki");
     
-    // Decode string "VW1pa28gU2VjdXJpdHk="
-    mercy_decode("base64", "VW1pa28gU2VjdXJpdHk=");
+    // Decode string "Q3liZXJTdWtp"
+    mercy_decode("base64", "Q3liZXJTdWtp");
 }
 ```
 
