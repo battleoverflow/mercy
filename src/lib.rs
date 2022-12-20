@@ -1,10 +1,7 @@
 /*
-    CyberSuki (https://github.com/cybersuki)
-    File: src/lib.rs
-
-    Author(s): {
-        Hifumi1337 (https://github.com/Hifumi1337)
-    }
+    Owner: Catherine Framework (https://github.com/CatherineFramework)
+    Project: Mercy
+    License: BSD 2-Clause
 */
 
 use std::{
@@ -28,8 +25,8 @@ use sys_info::{
 };
 
 pub fn mercy_source() -> String {
-    const VERSION: &str = "1.1.12";
-    const AUTHOR: &str = "CyberSuki (https://github.com/cybersuki)";
+    const VERSION: &str = "1.1.13";
+    const AUTHOR: &str = "Catherine Framework (https://github.com/CatherineFramework)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
 
@@ -101,7 +98,7 @@ fn base64_decode(encoded_msg: String) -> String {
     return final_out.to_string();
 }
 
-// rot13 algorithm
+// rot13 decode
 fn rot13_decode(encoded_msg: String) -> String {
     let mut result_str = String::from("");
     
@@ -131,6 +128,7 @@ fn rot13_decode(encoded_msg: String) -> String {
     Encoding methods
 */
 
+// Base64 encode
 fn base64_encode(plaintext_msg: String) -> String {
     // Converts into bytes
     let encoded_msg = base64::encode(plaintext_msg.as_bytes());
@@ -141,6 +139,7 @@ fn base64_encode(plaintext_msg: String) -> String {
     Hashing methods
 */
 
+// SHA256 hash
 fn sha2_256_hash(plaintext_msg: String) -> String {
     let mut run_hash = Sha256::new();
     run_hash.update(plaintext_msg.as_bytes());
@@ -149,6 +148,7 @@ fn sha2_256_hash(plaintext_msg: String) -> String {
     return format!("{:x}", hash);
 }
 
+// MD5 hash
 fn md5_hash(plaintext_msg: String) -> String {
     let hash = md5::compute(plaintext_msg.as_bytes());
     return format!("{:x}", hash);
@@ -199,6 +199,7 @@ fn internal_ip() -> String {
     return addr.ip().to_string();
 }
 
+// System information based on matching parameter
 fn system_info(data: &str) -> String {
 
     let all_system_info = format!("\nHostname: {}\nNumber of CPU cores: {}\nCPU Fan Speed: {} MHz\nOperating System Release Version: {}\nNumber of Processes: {}\n", hostname().unwrap(), cpu_num().unwrap(), cpu_speed().unwrap(), os_release().unwrap(), proc_total().unwrap());

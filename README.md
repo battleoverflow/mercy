@@ -9,14 +9,14 @@
 </h3>
 <br>
 
-Mercy is a public Rust crate created to assist with building cybersecurity frameworks, assessment tools, and numerous other projects. We hope to create a sustainable crate to make creating security tools in Rust a little easier and not require so much bloat in your project.
+Mercy is a public Rust crate created to assist with building cybersecurity frameworks, assessment tools, and numerous other projects. We hope to create a sustainable crate to make creating security tools in Rust a little easier.
 
 ## Usage
-Since Mercy is a standard crate, it can easily be utilized in any project already initialized with the Cargo configuration.
+Since Mercy is a standard crate, it can easily be utilized in any project already initialized with Cargo.
 
 Add the following line to your `Cargo.toml` file:
 ```toml
-mercy = "1.1.12"
+mercy = "1.1.13"
 ```
 
 Once the `Cargo.toml` file has been updated, you can import the crate and use the provided methods by running `cargo run`.
@@ -30,11 +30,11 @@ use mercy::{
 };
 
 fn main() {
-    // Encode string "CyberSuki"
-    mercy_encode("base64", "CyberSuki");
+    // Encode string "Hifumi1337"
+    mercy_encode("base64", "Hifumi1337");
     
-    // Decode string "Q3liZXJTdWtp"
-    mercy_decode("base64", "Q3liZXJTdWtp");
+    // Decode string "SGlmdW1pMTMzNw=="
+    mercy_decode("base64", "SGlmdW1pMTMzNw==");
 }
 ```
 
@@ -49,19 +49,19 @@ fn main() {
 ```
 
 ### Miscellaneous Methods
-Some extra methods have been included to assist with local data collection. We currently allow you to collect the internal ip address of your device or dump certain information, specified by the user.
+Some extra methods have been included to assist with local data collection. You can currently collect the internal ip address of your device or dump certain information, specified by the user.
 ```rust
 use mercy::mercy_extra;
 
 fn main() {
     // Contains the internal ip address of the user's system
-    mercy_extra("internal_ip", "");
+    mercy_extra("internal_ip", ""); // Second parameter MUST be an empty string to work
 
     // This method is extensive, but the "all" parameter allows the user to dump everything we have set in Mercy
     mercy_extra("system_info", "all");
 }
 ```
-We can also use the following paremeters, replacing the "all" keyword:
+You can also use the following paremeters, replacing the "all" keyword:
 
 - hostname
 - cpu_cores
