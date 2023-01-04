@@ -1,28 +1,23 @@
 <h1 align="center">
     <img src="assets/mercy_banner_v1.png" />
-    <br />
-    Mercy
 </h1>
 
-<h3 align="center">
-    📚 <a href="https://docs.rs/mercy/latest/mercy/">Documentation</a>
-</h3>
-<br>
+📚 [Documentation](https://docs.rs/mercy/latest/mercy/)
 
-Mercy is a public Rust crate created to assist with building cybersecurity frameworks, assessment tools, and numerous other projects. We hope to create a sustainable crate to make creating security tools in Rust a little easier.
+Mercy is a public Rust crate created to assist with building cybersecurity frameworks and assessment tools. The goal is to create a sustainable crate to make creating security tools in Rust a little easier.
 
 ## Usage
 Since Mercy is a standard crate, it can easily be utilized in any project already initialized with Cargo.
 
 Add the following line to your `Cargo.toml` file:
 ```toml
-mercy = "1.1.13"
+mercy = "1.1.14"
 ```
 
 Once the `Cargo.toml` file has been updated, you can import the crate and use the provided methods by running `cargo run`.
 
 ### Cryptographic Processes
-Here's a quick example for decoding and encoding using the base64 protocol:
+Here's a quick example of decoding and encoding using the base64 protocol:
 ```rust
 use mercy::{
     mercy_decode,
@@ -30,11 +25,11 @@ use mercy::{
 };
 
 fn main() {
-    // Encode string "Hifumi1337"
-    mercy_encode("base64", "Hifumi1337");
+    // Encode string "azazelm3dj3d"
+    mercy_encode("base64", "azazelm3dj3d");
     
-    // Decode string "SGlmdW1pMTMzNw=="
-    mercy_decode("base64", "SGlmdW1pMTMzNw==");
+    // Decode string "YXphemVsbTNkajNk"
+    mercy_decode("base64", "YXphemVsbTNkajNk");
 }
 ```
 
@@ -45,6 +40,16 @@ use mercy::mercy_hex;
 
 fn main() {
     mercy_hex("hex_dump", "/Location/of/file");
+}
+```
+
+### Malware/Malicious Detection
+You can check if a domain (i.e. google.com) is currently classified as malicious using the InQuest API:
+```rust
+use mercy::mercy_malicious;
+
+fn main() {
+    mercy_malicious("status", "azazelm3dj3d.com");
 }
 ```
 

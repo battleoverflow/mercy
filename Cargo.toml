@@ -1,8 +1,8 @@
 [package]
 name = "mercy"
-version = "1.1.13"
+version = "1.1.14"
 edition = "2021"
-authors = ["Hifumi1337"]
+authors = ["azazelm3dj3d"]
 license = "BSD-2-Clause"
 categories = ["cryptography", "encoding"]
 keywords = ["hashing", "decode", "encode", "cracking"]
@@ -17,3 +17,7 @@ sha2 = "0.10"
 md5 = "0.7.0"
 hexdump = "0.1.1"
 sys-info = "0.9.0"
+serde = "1.0"
+serde_json = "1.0"
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1", features = ["full"] }

@@ -1,8 +1,26 @@
+//! # Mercy
+//!
+//! Mercy is a public Rust crate created to assist with building cybersecurity frameworks and assessment tools
+//!
+//! | Function                | More Info                              |
+//! | ----------------------- | -------------------------------------- |
+//! | `mercy_source`          | Learn more about the crate             |
+//! | `mercy_decode`          | Supports: base64, rot13                |
+//! | `mercy_encode`          | Supports: base64                       |
+//! | `mercy_hash`            | Supports: sha2_256, md5                |
+//! | `mercy_hex`             | Dump hexadecimal values of a file      |
+//! | `mercy_malicious`       | Malware detection or malicious intent  |
+//! | `mercy_extra`           | Information about various data points  |
+//! 
+
 /*
     Owner: Catherine Framework (https://github.com/CatherineFramework)
     Project: Mercy
     License: BSD 2-Clause
 */
+
+use std::io::Write;
+use serde_json::Value;
 
 use std::{
     path::Path,
@@ -24,6 +42,7 @@ use sys_info::{
     proc_total
 };
 
+/// Learn more about the crate
 pub fn mercy_source() -> String {
     const VERSION: &str = "1.1.13";
     const AUTHOR: &str = "Catherine Framework (https://github.com/CatherineFramework)";
@@ -33,6 +52,8 @@ pub fn mercy_source() -> String {
 /*
     Public decoding methods provided by Mercy
 */
+
+/// Supports: base64, rot13
 pub fn mercy_decode(mercy_call: &str, mercy_string: &str) -> String {
     match mercy_call {
         "base64" => base64_decode(mercy_string.to_string()),
@@ -44,6 +65,8 @@ pub fn mercy_decode(mercy_call: &str, mercy_string: &str) -> String {
 /*
     Public encoding methods provided by Mercy
 */
+
+/// Supports: base64
 pub fn mercy_encode(mercy_call: &str, mercy_string: &str) -> String {
     match mercy_call {
         "base64" => base64_encode(mercy_string.to_string()),
@@ -54,6 +77,8 @@ pub fn mercy_encode(mercy_call: &str, mercy_string: &str) -> String {
 /*
     Public hash methods provided by Mercy
 */
+
+/// Supports: sha2_256, md5
 pub fn mercy_hash(mercy_call: &str, mercy_string: &str) -> String {
     match mercy_call {
         "sha2_256" => sha2_256_hash(mercy_string.to_string()),
@@ -65,6 +90,8 @@ pub fn mercy_hash(mercy_call: &str, mercy_string: &str) -> String {
 /*
     Public hexadecimal methods provided by Mercy
 */
+
+/// Dump hexadecimal values of a file
 pub fn mercy_hex(mercy_call: &str, mercy_file: &str) -> String {
     match mercy_call {
         "hex_dump" => collect_file_hex(mercy_file),
@@ -73,8 +100,22 @@ pub fn mercy_hex(mercy_call: &str, mercy_file: &str) -> String {
 }
 
 /*
+    Public malware and malicious domain detection
+*/
+
+/// Malware detection or malicious intent
+pub fn mercy_malicious(mercy_call: &str, mercy_domain: &str) -> String {
+    match mercy_call {
+        "status" => malicious_domain_status(mercy_domain),
+        _ => unknown_msg("Unable to classify domain")
+    }
+}
+
+/*
     Public extra methods provided by Mercy
 */
+
+/// Information about various data points
 pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
     match mercy_call {
         "internal_ip" => internal_ip(),
@@ -217,4 +258,56 @@ fn system_info(data: &str) -> String {
 
 fn unknown_msg(custom_msg: &str) -> String {
     return format!("{}", custom_msg);
+}
+
+/* Malicious Detection */
+
+#[tokio::main]
+pub async fn malicious_domain_status(domain: &str) -> String {
+    url_request(domain).await;
+
+    // Saves a local JSON file for parsing
+    let json_file: &str = "/tmp/catherine_malware_detect.json";
+    
+    let json_parse = {
+        // Load the JSON file and convert to an easier to read format
+        let json_convert = std::fs::read_to_string(&json_file).expect("Unable to locate file");
+        serde_json::from_str::<Value>(&json_convert).unwrap()
+    };
+
+    // println!("Domain: {}", &json_parse["data"][0]["value"]);
+
+    // Deletes temporary JSON file
+    fs::remove_file("/tmp/catherine_malware_detect.json").unwrap();
+
+    if &json_parse["data"][0]["classification"] == "MALICIOUS" {
+        return "Malicious".to_string();
+    } else if &json_parse["data"][0]["classification"] == "UNKNOWN" {
+        return "Unknown".to_string();
+    } else if &json_parse["data"][0]["classification"] == "SUSPICIOUS" {
+        return "Suspicious".to_string();
+    } else {
+        return "No classification available".to_string();
+    }
+}
+
+async fn url_request(url: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    
+    // Creates temp file for JSON data
+    let mut file = File::create("/tmp/catherine_malware_detect.json").expect("Failed to create file");
+
+    // Constructs API request via InQuest
+    let form_url = format!("https://labs.inquest.net/api/dfi/search/ioc/domain?keyword={}", url);
+
+    // Data from API request
+    let body = client.get(form_url).send()
+        .await?
+        .text()
+        .await?;
+
+    // Writes JSON data to the temp file
+    file.write_all(body.as_bytes()).expect("Failed to write to file");
+
+    Ok(body)
 }
