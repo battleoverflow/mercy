@@ -19,7 +19,7 @@
     License: BSD 2-Clause
 */
 
-use std::io::Write;
+use std::{io::Write, net::TcpStream, str::from_utf8};
 use serde_json::Value;
 
 use std::{
@@ -44,7 +44,7 @@ use sys_info::{
 
 /// Learn more about the crate
 pub fn mercy_source() -> String {
-    const VERSION: &str = "1.1.13";
+    const VERSION: &str = "1.1.15";
     const AUTHOR: &str = "Catherine Framework (https://github.com/CatherineFramework)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
@@ -75,7 +75,7 @@ pub fn mercy_encode(mercy_call: &str, mercy_string: &str) -> String {
 }
 
 /*
-    Public hash methods provided by Mercy
+    Public hashing methods provided by Mercy
 */
 
 /// Supports: sha2_256, md5
@@ -92,6 +92,8 @@ pub fn mercy_hash(mercy_call: &str, mercy_string: &str) -> String {
 */
 
 /// Dump hexadecimal values of a file
+/// 
+/// `hex_dump` - Dumps hexadecimal data of a file
 pub fn mercy_hex(mercy_call: &str, mercy_file: &str) -> String {
     match mercy_call {
         "hex_dump" => collect_file_hex(mercy_file),
@@ -104,6 +106,8 @@ pub fn mercy_hex(mercy_call: &str, mercy_file: &str) -> String {
 */
 
 /// Malware detection or malicious intent
+/// 
+/// `status` - Returns a status of 'malicious', 'unknown', or 'suspicious' from the InQuest API
 pub fn mercy_malicious(mercy_call: &str, mercy_domain: &str) -> String {
     match mercy_call {
         "status" => malicious_domain_status(mercy_domain),
@@ -116,10 +120,20 @@ pub fn mercy_malicious(mercy_call: &str, mercy_domain: &str) -> String {
 */
 
 /// Information about various data points
+/// ### Methods
+/// `internal_ip` - Returns the host (internal) ip address of the system
+/// 
+/// `system_info` - Returns numerous data points associated with the host system
+/// 
+/// `defang` - Returns a defanged url and/or ip address
+/// 
+/// `whois` - Returns WHOIS lookup information
 pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
     match mercy_call {
         "internal_ip" => internal_ip(),
         "system_info" => system_info(mercy_choose),
+        "defang" => defang(mercy_choose),
+        "whois" => whois_lookup(mercy_choose),
         _ => unknown_msg("Unable to provide the information you requested")
     }
 }
@@ -256,6 +270,24 @@ fn system_info(data: &str) -> String {
     }
 }
 
+fn defang(ip_or_url: &str) -> String {
+    return ip_or_url.replace(".", "[.]")
+}
+
+fn whois_lookup(url: &str) -> String {
+    let whois_server = "whois.verisign-grs.com";
+    let whois_port = 43;
+
+    let mut stream = TcpStream::connect((whois_server, whois_port)).unwrap();
+    stream.write_all(format!("{}\r\n", url).as_bytes()).unwrap();
+
+    let mut whois_response = Vec::new();
+    stream.read_to_end(&mut whois_response).unwrap();
+
+    let res_to_str = from_utf8(&whois_response).unwrap();
+    return res_to_str.to_string();
+}
+
 fn unknown_msg(custom_msg: &str) -> String {
     return format!("{}", custom_msg);
 }
@@ -274,8 +306,6 @@ pub async fn malicious_domain_status(domain: &str) -> String {
         let json_convert = std::fs::read_to_string(&json_file).expect("Unable to locate file");
         serde_json::from_str::<Value>(&json_convert).unwrap()
     };
-
-    // println!("Domain: {}", &json_parse["data"][0]["value"]);
 
     // Deletes temporary JSON file
     fs::remove_file("/tmp/catherine_malware_detect.json").unwrap();

@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="assets/mercy_banner_v1.png" />
+    <img src="assets/mercy_icon.png" width="50%" />
 </h1>
 
 📚 [Documentation](https://docs.rs/mercy/latest/mercy/)
@@ -64,9 +64,15 @@ fn main() {
 
     // This method is extensive, but the "all" parameter allows the user to dump everything we have set in Mercy
     mercy_extra("system_info", "all");
+
+    // Method now available which allows you to defang a url or ip address
+    mercy_extra("defang", "azazelm3dj3d.com");
+
+    // Run a WHOIS lookup for a domain
+    mercy_extra("whois", "azazelm3dj3d.com");
 }
 ```
-You can also use the following paremeters, replacing the "all" keyword:
+You can also use the following parameters, replacing the "all" keyword:
 
 - hostname
 - cpu_cores
