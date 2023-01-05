@@ -11,7 +11,7 @@ Since Mercy is a standard crate, it can easily be utilized in any project alread
 
 Add the following line to your `Cargo.toml` file:
 ```toml
-mercy = "1.1.14"
+mercy = "1.1.15"
 ```
 
 Once the `Cargo.toml` file has been updated, you can import the crate and use the provided methods by running `cargo run`.
