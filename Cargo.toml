@@ -1,13 +1,13 @@
 [package]
 name = "mercy"
-version = "1.1.12"
+version = "1.2.16"
 edition = "2021"
-authors = ["Hifumi1337"]
+authors = ["azazelm3dj3d"]
 license = "BSD-2-Clause"
 categories = ["cryptography", "encoding"]
 keywords = ["hashing", "decode", "encode", "cracking"]
-description = "Mercy is a public Rust crate created to assist with building cybersecurity frameworks, assessment tools, and numerous other projects"
-repository = "https://github.com/cybersuki/mercy"
+description = "Mercy is a public Rust crate created to assist with building cybersecurity frameworks (offensive and defensive) and assessment tools. The goal is to create a sustainable crate to make creating security tools in Rust a little easier."
+repository = "https://github.com/CatherineFramework/mercy"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -17,3 +17,7 @@ sha2 = "0.10"
 md5 = "0.7.0"
 hexdump = "0.1.1"
 sys-info = "0.9.0"
+serde = "1.0"
+serde_json = "1.0"
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1", features = ["full"] }
