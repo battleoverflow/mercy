@@ -44,14 +44,12 @@ use sys_info::{
 
 /// Learn more about the crate
 pub fn mercy_source() -> String {
-    const VERSION: &str = "1.1.15";
+    const VERSION: &str = "1.2.15";
     const AUTHOR: &str = "Catherine Framework (https://github.com/CatherineFramework)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
 
-/*
-    Public decoding methods provided by Mercy
-*/
+/* Public decoding methods provided by Mercy */
 
 /// Supports: base64, rot13
 pub fn mercy_decode(mercy_call: &str, mercy_string: &str) -> String {
@@ -62,9 +60,7 @@ pub fn mercy_decode(mercy_call: &str, mercy_string: &str) -> String {
     }
 }
 
-/*
-    Public encoding methods provided by Mercy
-*/
+/* Public encoding methods provided by Mercy */
 
 /// Supports: base64
 pub fn mercy_encode(mercy_call: &str, mercy_string: &str) -> String {
@@ -74,9 +70,7 @@ pub fn mercy_encode(mercy_call: &str, mercy_string: &str) -> String {
     }
 }
 
-/*
-    Public hashing methods provided by Mercy
-*/
+/* Public hashing methods provided by Mercy */
 
 /// Supports: sha2_256, md5
 pub fn mercy_hash(mercy_call: &str, mercy_string: &str) -> String {
@@ -87,9 +81,7 @@ pub fn mercy_hash(mercy_call: &str, mercy_string: &str) -> String {
     }
 }
 
-/*
-    Public hexadecimal methods provided by Mercy
-*/
+/* Public hexadecimal methods provided by Mercy */
 
 /// Dump hexadecimal values of a file
 /// 
@@ -101,9 +93,7 @@ pub fn mercy_hex(mercy_call: &str, mercy_file: &str) -> String {
     }
 }
 
-/*
-    Public malware and malicious domain detection
-*/
+/* Public malware and malicious detection */
 
 /// Malware detection or malicious intent
 /// 
@@ -115,9 +105,7 @@ pub fn mercy_malicious(mercy_call: &str, mercy_domain: &str) -> String {
     }
 }
 
-/*
-    Public extra methods provided by Mercy
-*/
+/* Public extra methods provided by Mercy */
 
 /// Information about various data points
 /// ### Methods
@@ -138,9 +126,7 @@ pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
     }
 }
 
-/*
-    Decoding methods
-*/
+/* Decoding methods */
 
 // Base64 decode
 fn base64_decode(encoded_msg: String) -> String {
@@ -179,9 +165,7 @@ fn rot13_decode(encoded_msg: String) -> String {
     return result_str.to_string();
 }
 
-/*
-    Encoding methods
-*/
+/* Encoding methods */
 
 // Base64 encode
 fn base64_encode(plaintext_msg: String) -> String {
@@ -190,9 +174,7 @@ fn base64_encode(plaintext_msg: String) -> String {
     return encoded_msg.to_string();
 }
 
-/*
-    Hashing methods
-*/
+/* Hashing methods */
 
 // SHA256 hash
 fn sha2_256_hash(plaintext_msg: String) -> String {
@@ -209,9 +191,7 @@ fn md5_hash(plaintext_msg: String) -> String {
     return format!("{:x}", hash);
 }
 
-/*
-    Hexadecimal manipulation
-*/
+/* Hexadecimal manipulation */
 
 // Converts file/bytes to a readable vector
 fn byte_to_vec(filename: &str) -> Vec<u8> {
@@ -242,9 +222,7 @@ fn collect_file_hex(convert_file: &str) -> String {
     }
 }
 
-/*
-    Miscellaneous
-*/
+/* Miscellaneous */
 
 // Quick method for collecting the internal ip address of the local system
 fn internal_ip() -> String {
@@ -270,10 +248,12 @@ fn system_info(data: &str) -> String {
     }
 }
 
+// Basic defang for URLs and IP addresses (or any string with a '.')
 fn defang(ip_or_url: &str) -> String {
     return ip_or_url.replace(".", "[.]")
 }
 
+// WHOIS lookup for domain information
 fn whois_lookup(url: &str) -> String {
     let whois_server = "whois.verisign-grs.com";
     let whois_port = 43;
@@ -294,12 +274,13 @@ fn unknown_msg(custom_msg: &str) -> String {
 
 /* Malicious Detection */
 
+// Handles the actual JSON response from the url request
 #[tokio::main]
 pub async fn malicious_domain_status(domain: &str) -> String {
     url_request(domain).await;
 
     // Saves a local JSON file for parsing
-    let json_file: &str = "/tmp/catherine_malware_detect.json";
+    let json_file: &str = "/tmp/mercy_domain_review.json";
     
     let json_parse = {
         // Load the JSON file and convert to an easier to read format
@@ -308,7 +289,7 @@ pub async fn malicious_domain_status(domain: &str) -> String {
     };
 
     // Deletes temporary JSON file
-    fs::remove_file("/tmp/catherine_malware_detect.json").unwrap();
+    fs::remove_file("/tmp/mercy_domain_review.json").unwrap();
 
     if &json_parse["data"][0]["classification"] == "MALICIOUS" {
         return "Malicious".to_string();
@@ -321,11 +302,12 @@ pub async fn malicious_domain_status(domain: &str) -> String {
     }
 }
 
+// Makes an async url request to the InQuest API for domain IOC info
 async fn url_request(url: &str) -> Result<String, Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     
     // Creates temp file for JSON data
-    let mut file = File::create("/tmp/catherine_malware_detect.json").expect("Failed to create file");
+    let mut file = File::create("/tmp/mercy_domain_review.json").expect("Failed to create file");
 
     // Constructs API request via InQuest
     let form_url = format!("https://labs.inquest.net/api/dfi/search/ioc/domain?keyword={}", url);

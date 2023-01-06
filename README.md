@@ -4,17 +4,17 @@
 
 📚 [Documentation](https://docs.rs/mercy/latest/mercy/)
 
-Mercy is a public Rust crate created to assist with building cybersecurity frameworks and assessment tools. The goal is to create a sustainable crate to make creating security tools in Rust a little easier.
+Mercy is a public Rust crate created to assist with building cybersecurity frameworks (offensive and defensive) and assessment tools. The goal is to create a sustainable crate to make creating security tools in Rust a little easier.
 
 ## Usage
 Since Mercy is a standard crate, it can easily be utilized in any project already initialized with Cargo.
 
 Add the following line to your `Cargo.toml` file:
 ```toml
-mercy = "1.1.15"
+mercy = "1.2.15"
 ```
 
-Once the `Cargo.toml` file has been updated, you can import the crate and use the provided methods by running `cargo run`.
+Once the `Cargo.toml` file is updated, you can import the crate and use the provided methods by running `cargo run`. There are lots of different examples available below.
 
 ### Cryptographic Processes
 Here's a quick example of decoding and encoding using the base64 protocol:
@@ -54,7 +54,7 @@ fn main() {
 ```
 
 ### Miscellaneous Methods
-Some extra methods have been included to assist with local data collection. You can currently collect the internal ip address of your device or dump certain information, specified by the user.
+Some extra methods have been included to assist with data collection. You can currently collect the internal IP address of the host system, defang a URL or IP address, run a WHOIS domain lookup, or dump host system information, specified by the user.
 ```rust
 use mercy::mercy_extra;
 
@@ -72,7 +72,7 @@ fn main() {
     mercy_extra("whois", "azazelm3dj3d.com");
 }
 ```
-You can also use the following parameters, replacing the "all" keyword:
+You can also use the following parameters, replacing the "all" keyword under `system_info`:
 
 - hostname
 - cpu_cores
