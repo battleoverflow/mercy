@@ -14,8 +14,8 @@
 //! 
 
 /*
-    Owner: Catherine Framework (https://github.com/CatherineFramework)
-    Project: Mercy
+    Project: Mercy (https://github.com/mercy)
+    Author: azazelm3dj3d (https://github.com/azazelm3dj3d)
     License: BSD 2-Clause
 */
 
