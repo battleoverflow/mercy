@@ -1,6 +1,6 @@
 [package]
 name = "mercy"
-version = "1.2.16"
+version = "1.2.17"
 edition = "2021"
 authors = ["azazelm3dj3d"]
 license = "BSD-2-Clause"

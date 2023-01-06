@@ -44,7 +44,7 @@ use sys_info::{
 
 /// Learn more about the crate
 pub fn mercy_source() -> String {
-    const VERSION: &str = "1.2.16";
+    const VERSION: &str = "1.2.17";
     const AUTHOR: &str = "Catherine Framework (https://github.com/CatherineFramework)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
@@ -276,7 +276,7 @@ fn unknown_msg(custom_msg: &str) -> String {
 
 // Handles the actual JSON response from the url request
 #[tokio::main]
-pub async fn malicious_domain_status(domain: &str) -> String {
+async fn malicious_domain_status(domain: &str) -> String {
     url_request(domain).await.unwrap();
 
     // Saves a local JSON file for parsing
