@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="assets/mercy_icon.png" width="50%" />
+    <img src="assets/mercy_icon.png" width="40%" />
 </h1>
 
 📚 [Documentation](https://docs.rs/mercy/latest/mercy/)
