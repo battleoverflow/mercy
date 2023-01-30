@@ -49,7 +49,7 @@ You can check if a domain (i.e. google.com) is currently classified as malicious
 use mercy::mercy_malicious;
 
 fn main() {
-    mercy_malicious("status", "azazelm3dj3d.com");
+    mercy_malicious("status", "example.com");
 }
 ```
 
@@ -66,10 +66,10 @@ fn main() {
     mercy_extra("system_info", "all");
 
     // Method now available which allows you to defang a url or ip address
-    mercy_extra("defang", "azazelm3dj3d.com");
+    mercy_extra("defang", "example.com");
 
     // Run a WHOIS lookup for a domain
-    mercy_extra("whois", "azazelm3dj3d.com");
+    mercy_extra("whois", "example.com");
 }
 ```
 You can also use the following parameters, replacing the "all" keyword under `system_info`:

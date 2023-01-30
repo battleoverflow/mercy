@@ -14,8 +14,8 @@
 //! 
 
 /*
-    Project: Mercy (https://github.com/mercy)
-    Author: azazelm3dj3d (https://github.com/azazelm3dj3d)
+    Project: Mercy (https://github.com/jinxsecurity/mercy)
+    Author: Jinx Security (https://github.com/jinxsecurity)
     License: BSD 2-Clause
 */
 
@@ -45,7 +45,7 @@ use sys_info::{
 /// Learn more about the crate
 pub fn mercy_source() -> String {
     const VERSION: &str = "1.2.17";
-    const AUTHOR: &str = "Catherine Framework (https://github.com/CatherineFramework)";
+    const AUTHOR: &str = "Jinx Security (https://github.com/jinxsecurity)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
 
