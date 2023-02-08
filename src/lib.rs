@@ -14,8 +14,8 @@
 //! 
 
 /*
-    Project: Mercy (https://github.com/jinxsecurity/mercy)
-    Author: Jinx Security (https://github.com/jinxsecurity)
+    Project: Mercy (https://github.com/azazelm3dj3d/mercy)
+    Author: azazelm3dj3d (https://github.com/azazelm3dj3d)
     License: BSD 2-Clause
 */
 
@@ -45,7 +45,7 @@ use sys_info::{
 /// Learn more about the crate
 pub fn mercy_source() -> String {
     const VERSION: &str = "1.2.17";
-    const AUTHOR: &str = "Jinx Security (https://github.com/jinxsecurity)";
+    const AUTHOR: &str = "azazelm3dj3d (https://github.com/azazelm3dj3d)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
 
