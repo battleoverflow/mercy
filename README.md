@@ -99,6 +99,8 @@ fn main() {
 }
 ```
 
+## CLI
+
 While Mercy is available as a crate, it also moonlights as a command line interface. This allows you to install the crate as normal via Cargo and use all available methods without building your own assessment tool(s).
 
 You can find a few examples below on how to use the CLI.
