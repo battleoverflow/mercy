@@ -5,7 +5,7 @@
 📚 [Documentation](https://docs.rs/mercy/latest/mercy/)
 
 ![Mercy Status (Dev)](https://github.com/azazelm3dj3d/mercy/actions/workflows/dev.yml/badge.svg?branch=dev)
-<!-- ![Mercy Status (Main)](https://github.com/azazelm3dj3d/mercy/actions/workflows/main.yml/badge.svg?branch=main) -->
+![Mercy Status (Main)](https://github.com/azazelm3dj3d/mercy/actions/workflows/main.yml/badge.svg?branch=main)
 
 Mercy is an open-source Rust crate and CLI for building cybersecurity tools, assessment projects, and testing infrastructure. The goal is to create a sustainable project to make creating security tools in Rust a little easier.
 
