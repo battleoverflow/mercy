@@ -1,6 +1,6 @@
 //! # Mercy
 //!
-//! Mercy is a public Rust crate created to assist with building cybersecurity frameworks and assessment tools
+//! Mercy is an open-source Rust crate and CLI for building cybersecurity tools, assessment projects, and testing infrastructure. The goal is to create a sustainable project to make creating security tools in Rust a little easier.
 //!
 //! | Function                | More Info                              |
 //! | ----------------------- | -------------------------------------- |
@@ -44,7 +44,7 @@ use sys_info::{
 
 /// Learn more about the crate
 pub fn mercy_source() -> String {
-    const VERSION: &str = "1.2.19";
+    const VERSION: &str = "1.2.20";
     const AUTHOR: &str = "azazelm3dj3d (https://github.com/azazelm3dj3d)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }

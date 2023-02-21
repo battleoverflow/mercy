@@ -1,6 +1,6 @@
 //! # Mercy
 //!
-//! Mercy is a public Rust crate created to assist with building cybersecurity frameworks and assessment tools. This CLI was built on top of the Mercy Rust crate to showcase it's functionality in an easy to ingest format.
+//! Mercy is an open-source Rust crate and CLI for building cybersecurity tools, assessment projects, and testing infrastructure. The goal is to create a sustainable project to make creating security tools in Rust a little easier.
 //! 
 
 /*
@@ -74,14 +74,14 @@ fn main() {
 
         // Example scenarios
         println!("\n=== Examples ===");
-        println!("Print general information for the local system");
-        println!("./mercy -m sys -p system_info -i all\n");
+        println!("Print general information for the host system");
+        println!("mercy -m sys -p system_info -i all\n");
 
         println!("Decode an encoded string using base64");
-        println!("./mercy -m decode -p base64 -i bWVyY3kgaXMgcmVhbGx5IGNvb2w=\n");
+        println!("mercy -m decode -p base64 -i bWVyY3kgaXMgcmVhbGx5IGNvb2w=\n");
 
         println!("Check if a domain is malicious or not");
-        println!("./mercy -m mal -p status -i 'example.com'\n");
+        println!("mercy -m mal -p status -i 'example.com'\n");
     } else {
         match args.method.as_str() {
 

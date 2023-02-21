@@ -1,4 +1,4 @@
-name: Rust
+name: Mercy Status (Main)
 
 on:
   push:
