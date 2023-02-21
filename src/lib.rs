@@ -1,6 +1,6 @@
 //! # Mercy
 //!
-//! Mercy is a public Rust crate created to assist with building cybersecurity frameworks and assessment tools
+//! Mercy is an open-source Rust crate and CLI for building cybersecurity tools, assessment projects, and testing infrastructure. The goal is to create a sustainable project to make creating security tools in Rust a little easier.
 //!
 //! | Function                | More Info                              |
 //! | ----------------------- | -------------------------------------- |
@@ -42,9 +42,11 @@ use sys_info::{
     proc_total
 };
 
+use lemmeknow::Identifier;
+
 /// Learn more about the crate
 pub fn mercy_source() -> String {
-    const VERSION: &str = "1.2.17";
+    const VERSION: &str = "1.2.21";
     const AUTHOR: &str = "azazelm3dj3d (https://github.com/azazelm3dj3d)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
@@ -122,6 +124,7 @@ pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
         "system_info" => system_info(mercy_choose),
         "defang" => defang(mercy_choose),
         "whois" => whois_lookup(mercy_choose),
+        "identify" => identify_str(mercy_choose),
         _ => unknown_msg("Unable to provide the information you requested")
     }
 }
@@ -266,6 +269,11 @@ fn whois_lookup(url: &str) -> String {
 
     let res_to_str = from_utf8(&whois_response).unwrap();
     return res_to_str.to_string();
+}
+
+// Attempt to identify an unknown string
+fn identify_str(data: &str) -> String {
+    return Identifier::to_json(&Identifier::default().identify(data));
 }
 
 fn unknown_msg(custom_msg: &str) -> String {
