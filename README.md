@@ -13,7 +13,7 @@ Mercy is an open-source Rust crate and CLI for building cybersecurity tools, ass
 Since Mercy is a standard crate, it can easily be used in any project already initialized with Cargo. Simply add the following line to your `Cargo.toml` file:
 
 ```toml
-mercy = "1.2.20"
+mercy = "1.2.21"
 ```
 
 Once the `Cargo.toml` file is updated, you can import the crate and use the provided methods by running `cargo run`. There are lots of different examples available below.
@@ -77,6 +77,9 @@ fn main() {
 
     // Run a WHOIS lookup on a domain
     mercy_extra("whois", "azazelm3dj3d.com");
+
+    // Attempt to identify an unknown string
+    mercy_extra("identify", "UCrlEbqe4ppk5dVIHzdxtC7g");
 }
 ```
 
