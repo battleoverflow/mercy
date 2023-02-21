@@ -1,15 +1,13 @@
 [package]
 name = "mercy"
-version = "1.2.18"
+description = "Mercy is an open-source Rust crate and CLI for building cybersecurity tools, assessment tools, and testing infastructure."
+version = "1.2.19"
 edition = "2021"
-authors = ["azazelm3dj3d"]
+author = "azazelm3dj3d"
 license = "BSD-2-Clause"
-categories = ["cryptography", "encoding"]
-keywords = ["hashing", "decode", "encode", "cracking"]
-description = "Mercy is a public Rust crate created to assist with building cybersecurity frameworks (offensive and defensive) and assessment tools. The goal is to create a sustainable crate to make creating security tools in Rust a little easier."
+categories = ["cryptography", "command-line-utilities", "encoding"]
+keywords = ["cybersecurity", "decode", "encode", "cracking"]
 repository = "https://github.com/azazelm3dj3d/mercy"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 base64 = "0.13.0"
@@ -21,3 +19,5 @@ serde = "1.0"
 serde_json = "1.0"
 reqwest = { version = "0.11", features = ["json"] }
 tokio = { version = "1", features = ["full"] }
+clap = { version = "4.0.18", features = ["derive"] }
+prettytable-rs = "0.10.0"

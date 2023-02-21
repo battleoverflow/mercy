@@ -44,7 +44,7 @@ use sys_info::{
 
 /// Learn more about the crate
 pub fn mercy_source() -> String {
-    const VERSION: &str = "1.2.17";
+    const VERSION: &str = "1.2.19";
     const AUTHOR: &str = "azazelm3dj3d (https://github.com/azazelm3dj3d)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
