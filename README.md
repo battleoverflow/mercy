@@ -89,3 +89,60 @@ fn main() {
     mercy_source();
 }
 ```
+
+## CLI
+
+Once the executable has been downloaded, you can run the CLI tool using the following syntax:
+```bash
+./mercy-cli -m <METHOD> -p <PROTOCOL> -i <STRING/FILE>
+```
+
+You can also run the help command if you need a refresher on the available arguments:
+```bash
+./mercy-cli -h
+```
+
+The available options are listed below:
+```
+-i, --input     Encoded/Plaintext string for decoding/encoding (ex: IaMStr1Ng) + location of the file for hex_dump
+
+-m, --method    Chosen method for data manipulation (ex: decode)
+
+-p, --protocol  Chosen protocol for data manipulation (ex: base64)
+
+-e, --extended  View every available option within the Mercy CLI
+```
+
+### Examples
+
+Here are some quick examples of use cases:
+
+If you need to decode a string using the base64 protocol.
+```bash
+./mercy -m decode -p base64 -i <EncodedString>
+```
+
+Print host system information, such as hostname, cpu cores, etc.
+```bash
+./mercy -m sys -p system_info -i all
+```
+
+Take a plaintext string and encode it using MD5.
+```bash
+./mercy -m hash -p md5 -i <PlaintextString>
+```
+
+Print the internal IP address of your host system.
+```bash
+./mercy -m ip -p internal_ip
+```
+
+Quickly check if a domain is malicious.
+```
+./mercy -m mal -p status -i "example.com"
+```
+
+If you're stuck, you can use this option to learn every command at your disposal from [Mercy](https://github.com/azazelm3dj3d/mercy):
+```bash
+./mercy -e
+```
