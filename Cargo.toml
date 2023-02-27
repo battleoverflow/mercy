@@ -3,11 +3,11 @@ name = "mercy"
 description = "Mercy is an open-source Rust crate and CLI for building cybersecurity tools, assessment projects, and testing infrastructure."
 version = "1.2.21"
 edition = "2021"
-author = "azazelm3dj3d"
+author = "Azazel Labs"
 license = "BSD-2-Clause"
 categories = ["cryptography", "command-line-utilities", "encoding"]
 keywords = ["cybersecurity", "decode", "encode", "cracking"]
-repository = "https://github.com/azazelm3dj3d/mercy"
+repository = "https://github.com/azazellabs/mercy"
 
 [dependencies]
 base64 = "0.13.0"

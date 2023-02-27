@@ -14,8 +14,8 @@
 //! 
 
 /*
-    Project: Mercy (https://github.com/azazelm3dj3d/mercy)
-    Author: azazelm3dj3d (https://github.com/azazelm3dj3d)
+    Project: Mercy (https://github.com/azazellabs/mercy)
+    Author: Azazel Labs (https://github.com/azazellabs)
     License: BSD 2-Clause
 */
 
@@ -47,7 +47,7 @@ use lemmeknow::Identifier;
 /// Learn more about the crate
 pub fn mercy_source() -> String {
     const VERSION: &str = "1.2.21";
-    const AUTHOR: &str = "azazelm3dj3d (https://github.com/azazelm3dj3d)";
+    const AUTHOR: &str = "Azazel Labs (https://github.com/azazellabs)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
 

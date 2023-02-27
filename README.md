@@ -4,8 +4,8 @@
 
 📚 [Documentation](https://docs.rs/mercy/latest/mercy/)
 
-![Mercy Status (Dev)](https://github.com/azazelm3dj3d/mercy/actions/workflows/dev.yml/badge.svg?branch=dev)
-![Mercy Status (Main)](https://github.com/azazelm3dj3d/mercy/actions/workflows/main.yml/badge.svg?branch=main)
+![Mercy Status (Dev)](https://github.com/azazellabs/mercy/actions/workflows/dev.yml/badge.svg?branch=dev)
+![Mercy Status (Main)](https://github.com/azazellabs/mercy/actions/workflows/main.yml/badge.svg?branch=main)
 
 Mercy is an open-source Rust crate and CLI for building cybersecurity tools, assessment projects, and testing infrastructure. The goal is to create a sustainable project to make creating security tools in Rust a little easier.
 
@@ -28,11 +28,11 @@ use mercy::{
 };
 
 fn main() {
-    // Encode string "azazelm3dj3d"
-    mercy_encode("base64", "azazelm3dj3d");
+    // Encode string "azazellabs"
+    mercy_encode("base64", "azazellabs");
     
-    // Decode string "YXphemVsbTNkajNk"
-    mercy_decode("base64", "YXphemVsbTNkajNk");
+    // Decode string "YXphemVsbGFicw=="
+    mercy_decode("base64", "YXphemVsbGFicw==");
 }
 ```
 
@@ -48,13 +48,13 @@ fn main() {
 ```
 
 ### Malware/Malicious Detection
-You can check if a domain (i.e. azazelm3dj3d.com) is currently classified as malicious using the InQuest API:
+You can check if a domain (i.e. azazellabs.com) is currently classified as malicious using the InQuest API:
 
 ```rust
 use mercy::mercy_malicious;
 
 fn main() {
-    mercy_malicious("status", "azazelm3dj3d.com");
+    mercy_malicious("status", "azazellabs.com");
 }
 ```
 
@@ -73,10 +73,10 @@ fn main() {
     mercy_extra("system_info", "all");
 
     // Defang an ip address or domain
-    mercy_extra("defang", "azazelm3dj3d.com");
+    mercy_extra("defang", "azazellabs.com");
 
     // Run a WHOIS lookup on a domain
-    mercy_extra("whois", "azazelm3dj3d.com");
+    mercy_extra("whois", "azazellabs.com");
 
     // Attempt to identify an unknown string
     mercy_extra("identify", "UCrlEbqe4ppk5dVIHzdxtC7g");
@@ -155,10 +155,10 @@ mercy -m ip -p internal_ip
 
 Quickly check if a domain is malicious.
 ```
-mercy -m mal -p status -i "azazelm3dj3d.com"
+mercy -m mal -p status -i "azazellabs.com"
 ```
 
-If you're stuck, you can use this option to learn every command at your disposal from [Mercy](https://github.com/azazelm3dj3d/mercy):
+If you're stuck, you can use this option to learn every command at your disposal from [Mercy](https://github.com/azazellabs/mercy):
 ```bash
 mercy -e
 ```
