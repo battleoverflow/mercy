@@ -44,6 +44,9 @@ use sys_info::{
 
 use lemmeknow::Identifier;
 
+use ares::perform_cracking;
+use ares::config::Config;
+
 /// Learn more about the crate
 pub fn mercy_source() -> String {
     const VERSION: &str = "1.2.21";
@@ -118,6 +121,10 @@ pub fn mercy_malicious(mercy_call: &str, mercy_domain: &str) -> String {
 /// `defang` - Returns a defanged url and/or ip address
 /// 
 /// `whois` - Returns WHOIS lookup information
+/// 
+/// `identify` - Attempt to identify an unknown string
+/// 
+/// `crack` - Attempt to crack an encrypted string
 pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
     match mercy_call {
         "internal_ip" => internal_ip(),
@@ -125,6 +132,7 @@ pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
         "defang" => defang(mercy_choose),
         "whois" => whois_lookup(mercy_choose),
         "identify" => identify_str(mercy_choose),
+        "crack" => crack_str(mercy_choose),
         _ => unknown_msg("Unable to provide the information you requested")
     }
 }
@@ -274,6 +282,26 @@ fn whois_lookup(url: &str) -> String {
 // Attempt to identify an unknown string
 fn identify_str(data: &str) -> String {
     return Identifier::to_json(&Identifier::default().identify(data));
+}
+
+// Attempt to crack an encrypted string
+fn crack_str(data: &str) -> String {
+    let mut config = Config::default();
+    // TODO: Allow user to specify timeout
+    // Attempts to crack the string within 10 seconds
+    config.timeout = 10;
+    config.human_checker_on = false;
+    
+    let result = perform_cracking(data, config);
+
+    if !result.is_none() {
+        match result {
+            Some(result) => return format!("{:?}", result.text),
+            _ => return "Unable to crack string".to_string()
+        }
+    } else {
+        return "Result is None".to_string()
+    }
 }
 
 fn unknown_msg(custom_msg: &str) -> String {
