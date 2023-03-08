@@ -67,7 +67,7 @@ fn main() {
     // Extended help section for new users
     if args.extended {
         println!("\n=== Mercy CLI ===");
-        pretty_output("encode\ndecode\nhash\nhex\nsys\nip\nmal\nd\nwho\nid\nc", "base64, rot13\nbase64, rot13\nmd5, sha2_256\nhex_dump\nsystem_info\ninternal_ip\nstatus\ndefang\nwhois\nidentify\ncrack", "Method(s)", "Protocol(s)");
+        pretty_output("encode\ndecode\nhash\nhex\nsys\nip\nmal\nd\nwho\nid\nc\ndg", "base64, rot13\nbase64, rot13\nmd5, sha2_256\nhex_dump\nsystem_info\ninternal_ip\nstatus\ndefang\nwhois\nidentify\ncrack\ndomain_gen", "Method(s)", "Protocol(s)");
 
         println!("\n=== Mercy CLI Extended ===");
         pretty_output("system_info", "hostname\ncpu_cores\ncpu_speed\nos_release\nproc\nall", "Protocol(s)", "Input(s)");
@@ -85,6 +85,9 @@ fn main() {
 
         println!("Identify an unknown string");
         println!("mercy -m id -p identify -i 'UCrlEbqe4ppk5dVIHzdxtC7g'\n");
+
+        println!("Shuffle a provided string to construct a domain name");
+        println!("mercy -m dg -p domain_gen -i 'example.com'\n");
     } else {
         match args.method.as_str() {
 
@@ -99,6 +102,7 @@ fn main() {
             "who"    => println!("{}", mercy::mercy_extra(&args.protocol, &args.input)),
             "id"     => println!("{}", mercy::mercy_extra(&args.protocol, &args.input)),
             "c"      => println!("{}", mercy::mercy_extra(&args.protocol, &args.input)),
+            "dg"     =>  mercy::mercy_experimental(&args.protocol, &args.input),
             "mal"    => println!("{}", mercy::mercy_malicious(&args.protocol, &args.input)),
             _        => println!("Unable to parse provided arguments")
         }

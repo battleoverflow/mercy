@@ -19,15 +19,24 @@
     License: BSD 2-Clause
 */
 
-use std::{io::Write, net::TcpStream, str::from_utf8};
-use serde_json::Value;
-
 use std::{
     path::Path,
-    fs::{self, File},
-    io::Read,
-    net::UdpSocket
+    str::from_utf8,
+    fs::{
+        self,
+        File
+    },
+    io::{
+        Read,
+        Write
+    },
+    net::{
+        UdpSocket,
+        TcpStream
+    }
 };
+
+use serde_json::Value;
 
 use base64;
 use md5;
@@ -44,8 +53,10 @@ use sys_info::{
 
 use lemmeknow::Identifier;
 
-use ares::perform_cracking;
-use ares::config::Config;
+use ares::{
+    perform_cracking,
+    config::Config
+};
 
 /// Learn more about the crate
 pub fn mercy_source() -> String {
@@ -122,7 +133,7 @@ pub fn mercy_malicious(mercy_call: &str, mercy_domain: &str) -> String {
 /// 
 /// `whois` - Returns WHOIS lookup information
 /// 
-/// `identify` - Attempt to identify an unknown string
+/// `identify` - Attempt to identify an unknown string (requires a "." followed by an extension)
 /// 
 /// `crack` - Attempt to crack an encrypted string
 pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
@@ -134,6 +145,18 @@ pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
         "identify" => identify_str(mercy_choose),
         "crack" => crack_str(mercy_choose),
         _ => unknown_msg("Unable to provide the information you requested")
+    }
+}
+
+/* Experimental methods that still require some improvements and may only `prinln!` instead of a traditional `return` */
+
+/// Information about various data points
+/// ### Methods
+/// `domain_gen` - Shuffle a provided string to construct a domain name
+pub fn mercy_experimental(mercy_call: &str, mercy_choose: &str) {
+    match mercy_call {
+        "domain_gen" => domain_gen(mercy_choose),
+        _ => println!("Unable to provide the information you requested")
     }
 }
 
@@ -301,6 +324,53 @@ fn crack_str(data: &str) -> String {
         }
     } else {
         return "Result is None".to_string()
+    }
+}
+
+// Domain generation
+fn domain_gen(url: &str) {
+
+    let common_exts = [".com", ".io", ".co", ".ai", ".moe", ".org", ".edu", ".net", ".biz", ".ru", ".uk", ".au", ".de", ".in"];
+
+    for i in 0..url.len() {
+        let char_val = url.as_bytes()[i];
+
+        for bit_switch in 0..8 {
+            // Shuffles the character position
+            let shuffle: u8 = char_val ^ 1 << bit_switch;
+
+            if shuffle.is_ascii_alphanumeric()
+            || shuffle as char == '-'
+            && shuffle.to_ascii_lowercase()
+            != char_val.to_ascii_lowercase() {
+                
+                let mut payload = url.as_bytes()[..i].to_vec();
+                payload.push(shuffle);
+
+                // Appends onto the Vec<u8> for parsing
+                payload.append(&mut url.as_bytes()[i + 1..].to_vec());
+
+                if let Ok(d) = String::from_utf8(payload) {
+
+                    // Iterates over the preset extensions
+                    for e in common_exts.iter() {
+
+                        // Only returns if one of the extensions is present
+                        if d.ends_with(e) {
+                            println!("{}", d);
+                        }
+                    }
+
+                    // Handles cases where an extension is not present
+                    if !d.contains(".") {
+                        // Apparently, this way it doesn't return something like examplecom (when providing "example.com")
+                        if d.contains(".") {
+                            println!("{}", d);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

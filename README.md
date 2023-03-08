@@ -80,6 +80,9 @@ fn main() {
 
     // Attempt to identify an unknown string
     mercy_extra("identify", "UCrlEbqe4ppk5dVIHzdxtC7g");
+
+    // Attempt to crack an encrypted string
+    mercy_extra("crack", "YXphemVsbTNkajNk");
 }
 ```
 
@@ -90,6 +93,17 @@ You can also use the following parameters, replacing the "all" keyword under `sy
 - cpu_speed
 - os_release
 - proc
+
+There's also an experimental method, which means the code may be a bit broken or it's created differently from the other methods in some way:
+
+```rust
+use mercy::mercy_experimental;
+
+fn main() {
+    // Shuffle a provided string to construct a domain name
+    mercy_experimental("domain_gen", "example.com");
+}
+```
 
 ### More Info
 If ever in doubt, feel free to run this special function to display more information about the crate.
@@ -154,7 +168,7 @@ mercy -m ip -p internal_ip
 ```
 
 Quickly check if a domain is malicious.
-```
+```bash
 mercy -m mal -p status -i "azazelm3dj3d.com"
 ```
 
