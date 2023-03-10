@@ -93,7 +93,7 @@ You can also use the following parameters, replacing the "all" keyword under `sy
 - os_release
 - proc
 
-There's also an experimental method, which means the code may be a bit broken or it's created differently from the other methods in some way:
+There's also an experimental method, which means you'll receive everything through stdout without a `println!()`:
 
 ```rust
 use mercy::mercy_experimental;
@@ -101,6 +101,16 @@ use mercy::mercy_experimental;
 fn main() {
     // Shuffle a provided string to construct a domain name
     mercy_experimental("domain_gen", "example.com");
+}
+```
+
+You can now also extract zip files within your script or via the CLI. This is another method that only prints to stdout:
+
+```rust
+use mercy::mercy_experimental;
+
+fn main() {
+    mercy_experimental("zip", "/Users/name/Downloads/archive.zip");
 }
 ```
 
@@ -169,6 +179,11 @@ mercy -m ip -p internal_ip
 Quickly check if a domain is malicious.
 ```bash
 mercy -m mal -p status -i "azazelm3dj3d.com"
+```
+
+Extract a zip file.
+```bash
+mercy -m zip_e -p zip -i "/Users/name/Downloads/archive.zip"
 ```
 
 If you're stuck, you can use this option to learn every command at your disposal from [Mercy](https://github.com/azazelm3dj3d/mercy):

@@ -7,7 +7,7 @@
 //! | `mercy_source`          | Learn more about the crate             |
 //! | `mercy_decode`          | Supports: base64, rot13                |
 //! | `mercy_encode`          | Supports: base64                       |
-//! | `mercy_hash`            | Supports: sha2_256, md5                |
+//! | `mercy_hash`            | Supports: sha256, md5                  |
 //! | `mercy_hex`             | Dump hexadecimal values of a file      |
 //! | `mercy_malicious`       | Malware detection or malicious intent  |
 //! | `mercy_extra`           | Information about various data points  |
@@ -27,6 +27,7 @@ use std::{
         File
     },
     io::{
+        self,
         Read,
         Write
     },
@@ -88,10 +89,10 @@ pub fn mercy_encode(mercy_call: &str, mercy_string: &str) -> String {
 
 /* Public hashing methods provided by Mercy */
 
-/// Supports: sha2_256, md5
+/// Supports: sha256, md5
 pub fn mercy_hash(mercy_call: &str, mercy_string: &str) -> String {
     match mercy_call {
-        "sha2_256" => sha2_256_hash(mercy_string.to_string()),
+        "sha256" => sha256_hash(mercy_string.to_string()),
         "md5" => md5_hash(mercy_string.to_string()),
         _ => unknown_msg("Unable to hash message")
     }
@@ -148,14 +149,17 @@ pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
     }
 }
 
-/* Experimental methods that still require some improvements and may only `prinln!` instead of a traditional `return` */
+/* Experimental methods that still require some improvements and may only `prinln!()` instead of a traditional `return` */
 
 /// Information about various data points
 /// ### Methods
 /// `domain_gen` - Shuffle a provided string to construct a domain name
+/// 
+/// `zip` - Extract a zip file
 pub fn mercy_experimental(mercy_call: &str, mercy_choose: &str) {
     match mercy_call {
         "domain_gen" => domain_gen(mercy_choose),
+        "zip" => zip_extract(mercy_choose),
         _ => println!("Unable to provide the information you requested")
     }
 }
@@ -211,7 +215,7 @@ fn base64_encode(plaintext_msg: String) -> String {
 /* Hashing methods */
 
 // SHA256 hash
-fn sha2_256_hash(plaintext_msg: String) -> String {
+fn sha256_hash(plaintext_msg: String) -> String {
     let mut run_hash = Sha256::new();
     run_hash.update(plaintext_msg.as_bytes());
 
@@ -223,6 +227,63 @@ fn sha2_256_hash(plaintext_msg: String) -> String {
 fn md5_hash(plaintext_msg: String) -> String {
     let hash = md5::compute(plaintext_msg.as_bytes());
     return format!("{:x}", hash);
+}
+
+/* Extraction methods */
+
+// Zip file extraction
+fn zip_extract(filename: &str) {
+
+    // Locate zip file
+    let collect_file = File::open(Path::new(&*filename)).expect("Unable to locate file");
+
+    // Begin zip file read
+    let mut zip_archive = zip::ZipArchive::new(collect_file).expect("Failed to generate zip archive");
+
+    // Iterate over zip file data
+    for file in 0..zip_archive.len() {
+        let mut file_idx = zip_archive.by_index(file).expect("Unable to build zip index");
+        
+        let out_path = match file_idx.enclosed_name() {
+            Some(path) => path.to_owned(),
+            None => continue
+        };
+        
+        {
+            let comment = file_idx.comment();
+
+            if !comment.is_empty() {
+                println!("Comment located for file: {file}");
+                println!("Comment: \n{comment}");
+            }
+        }
+
+        if (*file_idx.name()).ends_with('/') {
+            println!("[{}] File path: \"{}\"", file, out_path.display());
+            fs::create_dir_all(&out_path).expect("Unable to create zip directories");
+        } else {
+            println!("[{}] File path: \"{}\" [{} bytes]", file, out_path.display(), file_idx.size());
+
+            if let Some(zip_path) = out_path.parent() {
+                if !zip_path.exists() {
+                    fs::create_dir_all(zip_path).unwrap();
+                }
+            }
+
+            let mut out = File::create(&out_path).unwrap();
+            io::copy(&mut file_idx, &mut out).unwrap();
+        }
+
+        // Get and Set permissions
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+
+            if let Some(mode) = file_idx.unix_mode() {
+                fs::set_permissions(&out_path, fs::Permissions::from_mode(mode)).unwrap();
+            }
+        }
+    }
 }
 
 /* Hexadecimal manipulation */
