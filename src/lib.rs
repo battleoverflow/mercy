@@ -250,6 +250,7 @@ fn zip_extract(filename: &str) {
         };
         
         {
+            // Checks the status of comments
             let comment = file_idx.comment();
 
             if !comment.is_empty() {
@@ -258,29 +259,33 @@ fn zip_extract(filename: &str) {
             }
         }
 
+        // Validates if the extracted data is a file or directory
         if (*file_idx.name()).ends_with('/') {
-            println!("[{}] File path: \"{}\"", file, out_path.display());
+            println!("[{}] Directory path: \"{}\"", file, out_path.display());
+
+            // Creates internal zip directories
             fs::create_dir_all(&out_path).expect("Unable to create zip directories");
         } else {
-            println!("[{}] File path: \"{}\" [{} bytes]", file, out_path.display(), file_idx.size());
+            println!("[{}] File path: \"{}\" ({} bytes)", file, out_path.display(), file_idx.size());
 
             if let Some(zip_path) = out_path.parent() {
                 if !zip_path.exists() {
-                    fs::create_dir_all(zip_path).unwrap();
+                    fs::create_dir_all(zip_path).expect("Unable to create directories");
                 }
             }
 
-            let mut out = File::create(&out_path).unwrap();
-            io::copy(&mut file_idx, &mut out).unwrap();
+            // Builds the output path
+            let mut out = File::create(&out_path).expect("Unable to create out_path");
+            io::copy(&mut file_idx, &mut out).expect("Unable to copy contents");
         }
 
-        // Get and Set permissions
+        // Handles permissions for Unix systems
         #[cfg(unix)]
         {
             use std::os::unix::fs::PermissionsExt;
 
             if let Some(mode) = file_idx.unix_mode() {
-                fs::set_permissions(&out_path, fs::Permissions::from_mode(mode)).unwrap();
+                fs::set_permissions(&out_path, fs::Permissions::from_mode(mode)).expect("Failure to update permissions");
             }
         }
     }
