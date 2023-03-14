@@ -1,21 +1,22 @@
 //! # Mercy
 //!
-//! Mercy is an open-source Rust crate and CLI for building cybersecurity tools, assessment projects, and testing infrastructure. The goal is to create a sustainable project to make creating security tools in Rust a little easier.
+//! Mercy is an open source Rust crate and CLI designed for building cybersecurity tools, assessment projects, and immediate testing. The goal of the project is to make creating security tools in Rust more accessible and sustainable.
 //!
-//! | Function                | More Info                              |
-//! | ----------------------- | -------------------------------------- |
-//! | `mercy_source`          | Learn more about the crate             |
-//! | `mercy_decode`          | Supports: base64, rot13                |
-//! | `mercy_encode`          | Supports: base64                       |
-//! | `mercy_hash`            | Supports: sha256, md5                  |
-//! | `mercy_hex`             | Dump hexadecimal values of a file      |
-//! | `mercy_malicious`       | Malware detection or malicious intent  |
-//! | `mercy_extra`           | Information about various data points  |
+//! | Function                | More Info                               |
+//! | ----------------------- | --------------------------------------- |
+//! | `mercy_source`          | Learn more about the crate              |
+//! | `mercy_decode`          | Supports: base64, rot13                 |
+//! | `mercy_encode`          | Supports: base64                        |
+//! | `mercy_hash`            | Supports: sha256, md5                   |
+//! | `mercy_hex`             | Dump hexadecimal values of a file       |
+//! | `mercy_malicious`       | Malware detection or malicious intent   |
+//! | `mercy_extra`           | Information about various data points   |
+//! | `mercy_experimental`    | Experimental functions for data control |
 //! 
 
 /*
     Project: Mercy (https://github.com/azazelm3dj3d/mercy)
-    Author: azazelm3dj3d (https://github.com/azazelm3dj3d)
+    Author(s): azazelm3dj3d (https://github.com/azazelm3dj3d)
     License: BSD 2-Clause
 */
 
@@ -61,7 +62,7 @@ use ares::{
 
 /// Learn more about the crate
 pub fn mercy_source() -> String {
-    const VERSION: &str = "1.2.21";
+    const VERSION: &str = "1.2.22";
     const AUTHOR: &str = "azazelm3dj3d (https://github.com/azazelm3dj3d)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
@@ -149,9 +150,10 @@ pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
     }
 }
 
-/* Experimental methods that still require some improvements and may only `prinln!()` instead of a traditional `return` */
+/* Experimental methods that do not require a `prinln!()`. Instead, you just call the method within the code for stdout. */
+// Example: mercy_experimental("zip", "/Users/name/Downloads/archive.zip");
 
-/// Information about various data points
+/// Experimental functions that only accept stdout
 /// ### Methods
 /// `domain_gen` - Shuffle a provided string to construct a domain name
 /// 
