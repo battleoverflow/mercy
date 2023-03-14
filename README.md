@@ -1,19 +1,18 @@
 <h1 align="center">
-    <img src="assets/mercy_icon.png" width="40%" />
+    <img src="https://raw.githubusercontent.com/azazelm3dj3d/mercy/main/assets/mercy_icon.png" width="40%" />
 </h1>
 
 📚 [Documentation](https://docs.rs/mercy/latest/mercy/)
 
-![Mercy Status (Dev)](https://github.com/azazelm3dj3d/mercy/actions/workflows/dev.yml/badge.svg?branch=dev)
 ![Mercy Status (Main)](https://github.com/azazelm3dj3d/mercy/actions/workflows/main.yml/badge.svg?branch=main)
 
-Mercy is an open-source Rust crate and CLI for building cybersecurity tools, assessment projects, and testing infrastructure. The goal is to create a sustainable project to make creating security tools in Rust a little easier.
+Mercy is an open source Rust crate and CLI designed for building cybersecurity tools, assessment projects, and immediate testing. The goal of the project is to make creating security tools in Rust more accessible and sustainable.
 
 ## Usage
 Since Mercy is a standard crate, it can easily be used in any project already initialized with Cargo. Simply add the following line to your `Cargo.toml` file:
 
 ```toml
-mercy = "1.2.21"
+mercy = "1.2.22"
 ```
 
 Once the `Cargo.toml` file is updated, you can import the crate and use the provided methods by running `cargo run`. There are lots of different examples available below.
@@ -80,6 +79,9 @@ fn main() {
 
     // Attempt to identify an unknown string
     mercy_extra("identify", "UCrlEbqe4ppk5dVIHzdxtC7g");
+
+    // Attempt to crack an encrypted string
+    mercy_extra("crack", "YXphemVsbTNkajNk");
 }
 ```
 
@@ -90,6 +92,27 @@ You can also use the following parameters, replacing the "all" keyword under `sy
 - cpu_speed
 - os_release
 - proc
+
+There's also an experimental method, which means you'll receive everything through stdout without a `println!()`:
+
+```rust
+use mercy::mercy_experimental;
+
+fn main() {
+    // Shuffle a provided string to construct a domain name
+    mercy_experimental("domain_gen", "example.com");
+}
+```
+
+You can now also extract zip files within your script or via the CLI. This is another method that only prints to stdout:
+
+```rust
+use mercy::mercy_experimental;
+
+fn main() {
+    mercy_experimental("zip", "/Users/name/Downloads/archive.zip");
+}
+```
 
 ### More Info
 If ever in doubt, feel free to run this special function to display more information about the crate.
@@ -154,8 +177,13 @@ mercy -m ip -p internal_ip
 ```
 
 Quickly check if a domain is malicious.
-```
+```bash
 mercy -m mal -p status -i "azazelm3dj3d.com"
+```
+
+Extract a zip file.
+```bash
+mercy -m zip_e -p zip -i "/Users/name/Downloads/archive.zip"
 ```
 
 If you're stuck, you can use this option to learn every command at your disposal from [Mercy](https://github.com/azazelm3dj3d/mercy):

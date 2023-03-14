@@ -1,3 +1,9 @@
+# This workflow is for production builds, main branch builds, etc.
+
+# Project: Mercy (https://github.com/azazelm3dj3d/mercy)
+# Author(s): azazelm3dj3d (https://github.com/azazelm3dj3d)
+# License: BSD 2-Clause
+
 name: Mercy Status (Main)
 
 on:

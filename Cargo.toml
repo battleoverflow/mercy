@@ -1,7 +1,7 @@
 [package]
 name = "mercy"
 description = "Mercy is an open-source Rust crate and CLI for building cybersecurity tools, assessment projects, and testing infrastructure."
-version = "1.2.21"
+version = "1.2.22"
 edition = "2021"
 author = "azazelm3dj3d"
 license = "BSD-2-Clause"
@@ -22,3 +22,5 @@ tokio = { version = "1", features = ["full"] }
 clap = { version = "4.0.18", features = ["derive"] }
 prettytable-rs = "0.10.0"
 lemmeknow = "0.7"
+project_ares = "0.9.0"
+zip = "0.6.4"

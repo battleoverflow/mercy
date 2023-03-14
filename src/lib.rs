@@ -1,33 +1,44 @@
 //! # Mercy
 //!
-//! Mercy is an open-source Rust crate and CLI for building cybersecurity tools, assessment projects, and testing infrastructure. The goal is to create a sustainable project to make creating security tools in Rust a little easier.
+//! Mercy is an open source Rust crate and CLI designed for building cybersecurity tools, assessment projects, and immediate testing. The goal of the project is to make creating security tools in Rust more accessible and sustainable.
 //!
-//! | Function                | More Info                              |
-//! | ----------------------- | -------------------------------------- |
-//! | `mercy_source`          | Learn more about the crate             |
-//! | `mercy_decode`          | Supports: base64, rot13                |
-//! | `mercy_encode`          | Supports: base64                       |
-//! | `mercy_hash`            | Supports: sha2_256, md5                |
-//! | `mercy_hex`             | Dump hexadecimal values of a file      |
-//! | `mercy_malicious`       | Malware detection or malicious intent  |
-//! | `mercy_extra`           | Information about various data points  |
+//! | Function                | More Info                               |
+//! | ----------------------- | --------------------------------------- |
+//! | `mercy_source`          | Learn more about the crate              |
+//! | `mercy_decode`          | Supports: base64, rot13                 |
+//! | `mercy_encode`          | Supports: base64                        |
+//! | `mercy_hash`            | Supports: sha256, md5                   |
+//! | `mercy_hex`             | Dump hexadecimal values of a file       |
+//! | `mercy_malicious`       | Malware detection or malicious intent   |
+//! | `mercy_extra`           | Information about various data points   |
+//! | `mercy_experimental`    | Experimental functions for data control |
 //! 
 
 /*
     Project: Mercy (https://github.com/azazelm3dj3d/mercy)
-    Author: azazelm3dj3d (https://github.com/azazelm3dj3d)
+    Author(s): azazelm3dj3d (https://github.com/azazelm3dj3d)
     License: BSD 2-Clause
 */
 
-use std::{io::Write, net::TcpStream, str::from_utf8};
-use serde_json::Value;
-
 use std::{
     path::Path,
-    fs::{self, File},
-    io::Read,
-    net::UdpSocket
+    str::from_utf8,
+    fs::{
+        self,
+        File
+    },
+    io::{
+        self,
+        Read,
+        Write
+    },
+    net::{
+        UdpSocket,
+        TcpStream
+    }
 };
+
+use serde_json::Value;
 
 use base64;
 use md5;
@@ -44,9 +55,14 @@ use sys_info::{
 
 use lemmeknow::Identifier;
 
+use ares::{
+    perform_cracking,
+    config::Config
+};
+
 /// Learn more about the crate
 pub fn mercy_source() -> String {
-    const VERSION: &str = "1.2.21";
+    const VERSION: &str = "1.2.22";
     const AUTHOR: &str = "azazelm3dj3d (https://github.com/azazelm3dj3d)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
@@ -74,10 +90,10 @@ pub fn mercy_encode(mercy_call: &str, mercy_string: &str) -> String {
 
 /* Public hashing methods provided by Mercy */
 
-/// Supports: sha2_256, md5
+/// Supports: sha256, md5
 pub fn mercy_hash(mercy_call: &str, mercy_string: &str) -> String {
     match mercy_call {
-        "sha2_256" => sha2_256_hash(mercy_string.to_string()),
+        "sha256" => sha256_hash(mercy_string.to_string()),
         "md5" => md5_hash(mercy_string.to_string()),
         _ => unknown_msg("Unable to hash message")
     }
@@ -118,6 +134,10 @@ pub fn mercy_malicious(mercy_call: &str, mercy_domain: &str) -> String {
 /// `defang` - Returns a defanged url and/or ip address
 /// 
 /// `whois` - Returns WHOIS lookup information
+/// 
+/// `identify` - Attempt to identify an unknown string (requires a "." followed by an extension)
+/// 
+/// `crack` - Attempt to crack an encrypted string
 pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
     match mercy_call {
         "internal_ip" => internal_ip(),
@@ -125,7 +145,24 @@ pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
         "defang" => defang(mercy_choose),
         "whois" => whois_lookup(mercy_choose),
         "identify" => identify_str(mercy_choose),
+        "crack" => crack_str(mercy_choose),
         _ => unknown_msg("Unable to provide the information you requested")
+    }
+}
+
+/* Experimental methods that do not require a `prinln!()`. Instead, you just call the method within the code for stdout. */
+// Example: mercy_experimental("zip", "/Users/name/Downloads/archive.zip");
+
+/// Experimental functions that only accept stdout
+/// ### Methods
+/// `domain_gen` - Shuffle a provided string to construct a domain name
+/// 
+/// `zip` - Extract a zip file
+pub fn mercy_experimental(mercy_call: &str, mercy_choose: &str) {
+    match mercy_call {
+        "domain_gen" => domain_gen(mercy_choose),
+        "zip" => zip_extract(mercy_choose),
+        _ => println!("Unable to provide the information you requested")
     }
 }
 
@@ -180,7 +217,7 @@ fn base64_encode(plaintext_msg: String) -> String {
 /* Hashing methods */
 
 // SHA256 hash
-fn sha2_256_hash(plaintext_msg: String) -> String {
+fn sha256_hash(plaintext_msg: String) -> String {
     let mut run_hash = Sha256::new();
     run_hash.update(plaintext_msg.as_bytes());
 
@@ -192,6 +229,68 @@ fn sha2_256_hash(plaintext_msg: String) -> String {
 fn md5_hash(plaintext_msg: String) -> String {
     let hash = md5::compute(plaintext_msg.as_bytes());
     return format!("{:x}", hash);
+}
+
+/* Extraction methods */
+
+// Zip file extraction
+fn zip_extract(filename: &str) {
+
+    // Locate zip file
+    let collect_file = File::open(Path::new(&*filename)).expect("Unable to locate file");
+
+    // Begin zip file read
+    let mut zip_archive = zip::ZipArchive::new(collect_file).expect("Failed to generate zip archive");
+
+    // Iterate over zip file data
+    for file in 0..zip_archive.len() {
+        let mut file_idx = zip_archive.by_index(file).expect("Unable to build zip index");
+        
+        let out_path = match file_idx.enclosed_name() {
+            Some(path) => path.to_owned(),
+            None => continue
+        };
+        
+        {
+            // Checks the status of comments
+            let comment = file_idx.comment();
+
+            if !comment.is_empty() {
+                println!("Comment located for file: {file}");
+                println!("Comment: \n{comment}");
+            }
+        }
+
+        // Validates if the extracted data is a file or directory
+        if (*file_idx.name()).ends_with('/') {
+            println!("[{}] Directory path: \"{}\"", file, out_path.display());
+
+            // Creates internal zip directories
+            fs::create_dir_all(&out_path).expect("Unable to create zip directories");
+        } else {
+            println!("[{}] File path: \"{}\" ({} bytes)", file, out_path.display(), file_idx.size());
+
+            if let Some(zip_path) = out_path.parent() {
+                if !zip_path.exists() {
+                    fs::create_dir_all(zip_path).expect("Unable to create directories");
+                }
+            }
+
+            // Builds the output path
+            let mut out = File::create(&out_path).expect("Unable to create out_path");
+            io::copy(&mut file_idx, &mut out).expect("Unable to copy contents");
+        }
+
+        // Handles permissions for Unix systems
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+
+            if let Some(mode) = file_idx.unix_mode() {
+                fs::set_permissions(&out_path, fs::Permissions::from_mode(mode)).expect("Failure to update permissions");
+            }
+        }
+    }
 }
 
 /* Hexadecimal manipulation */
@@ -274,6 +373,73 @@ fn whois_lookup(url: &str) -> String {
 // Attempt to identify an unknown string
 fn identify_str(data: &str) -> String {
     return Identifier::to_json(&Identifier::default().identify(data));
+}
+
+// Attempt to crack an encrypted string
+fn crack_str(data: &str) -> String {
+    let mut config = Config::default();
+    // TODO: Allow user to specify timeout
+    // Attempts to crack the string within 10 seconds
+    config.timeout = 10;
+    config.human_checker_on = false;
+    
+    let result = perform_cracking(data, config);
+
+    if !result.is_none() {
+        match result {
+            Some(result) => return format!("{:?}", result.text),
+            _ => return "Unable to crack string".to_string()
+        }
+    } else {
+        return "Result is None".to_string()
+    }
+}
+
+// Domain generation
+fn domain_gen(url: &str) {
+
+    let common_exts = [".com", ".io", ".co", ".ai", ".moe", ".org", ".edu", ".net", ".biz", ".ru", ".uk", ".au", ".de", ".in"];
+
+    for i in 0..url.len() {
+        let char_val = url.as_bytes()[i];
+
+        for bit_switch in 0..8 {
+            // Shuffles the character position
+            let shuffle: u8 = char_val ^ 1 << bit_switch;
+
+            if shuffle.is_ascii_alphanumeric()
+            || shuffle as char == '-'
+            && shuffle.to_ascii_lowercase()
+            != char_val.to_ascii_lowercase() {
+                
+                let mut payload = url.as_bytes()[..i].to_vec();
+                payload.push(shuffle);
+
+                // Appends onto the Vec<u8> for parsing
+                payload.append(&mut url.as_bytes()[i + 1..].to_vec());
+
+                if let Ok(d) = String::from_utf8(payload) {
+
+                    // Iterates over the preset extensions
+                    for e in common_exts.iter() {
+
+                        // Only returns if one of the extensions is present
+                        if d.ends_with(e) {
+                            println!("{}", d);
+                        }
+                    }
+
+                    // Handles cases where an extension is not present
+                    if !d.contains(".") {
+                        // Apparently, this way it doesn't return something like examplecom (when providing "example.com")
+                        if d.contains(".") {
+                            println!("{}", d);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 fn unknown_msg(custom_msg: &str) -> String {
