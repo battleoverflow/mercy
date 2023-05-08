@@ -135,7 +135,7 @@ pub fn mercy_malicious(mercy_call: &str, mercy_domain: &str) -> String {
 /// 
 /// `whois` - Returns WHOIS lookup information
 /// 
-/// `identify` - Attempt to identify an unknown string (requires a "." followed by an extension)
+/// `identify` - Attempt to identify an unknown string
 /// 
 /// `crack` - Attempt to crack an encrypted string
 pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
@@ -155,7 +155,7 @@ pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
 
 /// Experimental functions that only accept stdout
 /// ### Methods
-/// `domain_gen` - Shuffle a provided string to construct a domain name
+/// `domain_gen` - Shuffle a provided string to construct a domain name (requires a "." followed by an extension)
 /// 
 /// `zip` - Extract a zip file
 pub fn mercy_experimental(mercy_call: &str, mercy_choose: &str) {
