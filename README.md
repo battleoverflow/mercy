@@ -21,17 +21,14 @@ Once the `Cargo.toml` file is updated, you can import the crate and use the prov
 Here's a quick example of decoding and encoding using the base64 protocol:
 
 ```rust
-use mercy::{
-    mercy_decode,
-    mercy_encode
-};
+use mercy::{ decode, encode };
 
 fn main() {
     // Encode string "azazelm3dj3d"
-    mercy_encode("base64", "azazelm3dj3d");
+    encode("base64", "azazelm3dj3d");
     
     // Decode string "YXphemVsbGFicw=="
-    mercy_decode("base64", "YXphemVsbGFicw==");
+    decode("base64", "YXphemVsbGFicw==");
 }
 ```
 
@@ -39,10 +36,10 @@ fn main() {
 Here's how to dump hexadecimal values in a single line using Mercy:
 
 ```rust
-use mercy::mercy_hex;
+use mercy::hex;
 
 fn main() {
-    mercy_hex("hex_dump", "/Location/of/file");
+    hex("hex_dump", "/Location/of/file");
 }
 ```
 
@@ -50,10 +47,10 @@ fn main() {
 You can check if a domain (i.e. azazelm3dj3d.com) is currently classified as malicious using the InQuest API:
 
 ```rust
-use mercy::mercy_malicious;
+use mercy::malicious;
 
 fn main() {
-    mercy_malicious("status", "azazelm3dj3d.com");
+    malicious("status", "azazelm3dj3d.com");
 }
 ```
 
@@ -61,27 +58,27 @@ fn main() {
 Some extra methods have been included to assist with data collection. You can collect the internal IP address of the host system, defang a URL or IP address, run a WHOIS domain lookup, or dump host system information, specified by the user.
 
 ```rust
-use mercy::mercy_extra;
+use mercy::extra;
 
 fn main() {
     // Contains the internal ip address of the user's system
     // Second parameter MUST be an empty string to work
-    mercy_extra("internal_ip", "");
+    extra("internal_ip", "");
 
     // This method is extensive, but the "all" parameter allows the user to dump everything
-    mercy_extra("system_info", "all");
+    extra("system_info", "all");
 
     // Defang an ip address or domain
-    mercy_extra("defang", "azazelm3dj3d.com");
+    extra("defang", "azazelm3dj3d.com");
 
     // Run a WHOIS lookup on a domain
-    mercy_extra("whois", "azazelm3dj3d.com");
+    extra("whois", "azazelm3dj3d.com");
 
     // Attempt to identify an unknown string
-    mercy_extra("identify", "UCrlEbqe4ppk5dVIHzdxtC7g");
+    extra("identify", "UCrlEbqe4ppk5dVIHzdxtC7g");
 
     // Attempt to crack an encrypted string
-    mercy_extra("crack", "YXphemVsbTNkajNk");
+    extra("crack", "YXphemVsbTNkajNk");
 }
 ```
 
@@ -96,21 +93,21 @@ You can also use the following parameters, replacing the "all" keyword under `sy
 There's also an experimental method, which means you'll receive everything through stdout without a `println!()`:
 
 ```rust
-use mercy::mercy_experimental;
+use mercy::experimental;
 
 fn main() {
     // Shuffle a provided string to construct a domain name
-    mercy_experimental("domain_gen", "example.com");
+    experimental("domain_gen", "example.com");
 }
 ```
 
 You can now also extract zip files within your script or via the CLI. This is another method that only prints to stdout:
 
 ```rust
-use mercy::mercy_experimental;
+use mercy::experimental;
 
 fn main() {
-    mercy_experimental("zip", "/Users/name/Downloads/archive.zip");
+    experimental("zip", "/Users/name/Downloads/archive.zip");
 }
 ```
 
@@ -121,7 +118,7 @@ If ever in doubt, feel free to run this special function to display more informa
 use mercy::source;
 
 fn main() {
-    mercy_source();
+    source();
 }
 ```
 
