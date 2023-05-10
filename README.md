@@ -4,9 +4,9 @@
 
 📚 [Documentation](https://docs.rs/mercy/latest/mercy/)
 
-![Mercy Status (Main)](https://github.com/azazelm3dj3d/mercy/actions/workflows/main.yml/badge.svg?branch=main)
+![Workflow](https://github.com/azazelm3dj3d/mercy/actions/workflows/workflow.yml/badge.svg?branch=main)
 
-Mercy is an open source Rust crate and CLI designed for building cybersecurity tools, assessment projects, and immediate testing. The goal of the project is to make creating security tools in Rust more accessible and sustainable.
+Mercy is an open source Rust crate and CLI designed for building cybersecurity tools, assessment projects, and testing. The goal of the project is to make creating security tools in Rust more accessible and sustainable without complex algorithms.
 
 ## Usage
 Since Mercy is a standard crate, it can easily be used in any project already initialized with Cargo. Simply add the following line to your `Cargo.toml` file:

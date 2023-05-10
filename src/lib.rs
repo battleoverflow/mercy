@@ -1,6 +1,6 @@
 //! # Mercy
 //!
-//! Mercy is an open source Rust crate and CLI designed for building cybersecurity tools, assessment projects, and immediate testing. The goal of the project is to make creating security tools in Rust more accessible and sustainable.
+//! Mercy is an open source Rust crate and CLI designed for building cybersecurity tools, assessment projects, and testing.
 //!
 //! | Function                | More Info                               |
 //! | ----------------------- | --------------------------------------- |
