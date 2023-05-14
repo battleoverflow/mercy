@@ -65,7 +65,7 @@ use mailparse::*;
 
 /// Learn more about the crate
 pub fn source() -> String {
-    const VERSION: &str = "1.2.22";
+    const VERSION: &str = "2.0.0";
     const AUTHOR: &str = "azazelm3dj3d (https://github.com/azazelm3dj3d)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
