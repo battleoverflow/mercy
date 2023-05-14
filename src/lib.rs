@@ -61,6 +61,7 @@ use ares::{
 };
 
 use whatlang;
+use mailparse::*;
 
 /// Learn more about the crate
 pub fn source() -> String {
@@ -151,6 +152,7 @@ pub fn extra(mercy_call: &str, mercy_choose: &str) -> String {
         "identify" => identify_str(mercy_choose),
         "crack" => crack_str(mercy_choose),
         "detect_lang" => language_detection(mercy_choose),
+        "parse_email" => parse_email_content(mercy_choose),
         _ => unknown_msg("Unable to provide the information you requested")
     }
 }
@@ -456,6 +458,22 @@ fn language_detection(input: &str) -> String {
     }
 }
 
+// Quickly parse email content and return generic email values
+fn parse_email_content(content: &str) -> String {
+    let vec_binding = convert_file_to_vec(content);
+    let parse_content: ParsedMail = parse_mail(&vec_binding).unwrap();
+
+    let parsed_content: String = format!("Subject: {}\nFrom: {}\nTo: {}\nReturn Path: {}\nContent-Type: {}\nDate: {}",
+    parse_content.headers.get_first_value("Subject").unwrap().as_str(),
+    parse_content.headers.get_first_value("From").unwrap().as_str(),
+    parse_content.headers.get_first_value("To").unwrap().as_str(),
+    parse_content.headers.get_first_value("Return-Path").unwrap().as_str(),
+    parse_content.headers.get_first_value("Content-Type").unwrap().as_str(),
+    parse_content.headers.get_first_value("Date").unwrap().as_str());
+
+    return parsed_content;
+}
+
 fn unknown_msg(custom_msg: &str) -> String {
     return format!("{}", custom_msg);
 }
@@ -510,4 +528,14 @@ async fn url_request(url: &str) -> Result<String, Box<dyn std::error::Error>> {
     file.write_all(body.as_bytes()).expect("Failed to write to file");
 
     Ok(body)
+}
+
+// Helper function to convert a file's raw contents to a Vec<u8> to read as bytes
+fn convert_file_to_vec(file: &str) -> Vec<u8> {
+    let mut f = File::open(&file).expect("Unable to locate file");
+    let file_metadata = fs::metadata(&file).expect("Unable to read file metadata for buffer");
+    let mut buffer = vec![0; file_metadata.len() as usize];
+    f.read(&mut buffer).expect("Buffer overflow");
+
+    return buffer
 }
