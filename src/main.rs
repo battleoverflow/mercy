@@ -67,7 +67,7 @@ fn main() {
     // Extended help section for new users
     if args.extended {
         println!("\n=== Mercy CLI ===");
-        pretty_output("encode\ndecode\nhash\nhex\nsys\nip\nmal\nd\nwho\nid\nc\ndg\nzip_e", "base64, rot13\nbase64, rot13\nmd5, sha2_256\nhex_dump\nsystem_info\ninternal_ip\nstatus\ndefang\nwhois\nidentify\ncrack\ndomain_gen\nzip", "Method(s)", "Protocol(s)");
+        pretty_output("encode\ndecode\nhash\nhex\nsys\nip\nmal\nd\nwho\nid\nc\nlang\nemail\ndg\nzip_e", "base64, rot13\nbase64, rot13\nmd5, sha2_256\nhex_dump\nsystem_info\ninternal_ip\nstatus\ndefang\nwhois\nidentify\ncrack\ndetect_lang\nparse_email\ndomain_gen\nzip", "Method(s)", "Protocol(s)");
 
         println!("\n=== Mercy CLI Extended ===");
         pretty_output("system_info", "hostname\ncpu_cores\ncpu_speed\nos_release\nproc\nall", "Protocol(s)", "Input(s)");
@@ -91,23 +91,31 @@ fn main() {
 
         println!("Extract a zip file");
         println!("mercy -m zip_e -p zip -i '/Users/name/Downloads/archive.zip'\n");
+
+        println!("Attempt to detect the language in a string (beta)");
+        println!("mercy -m lang -p detect_lang -i 'mercy is a rust crate'\n");
+
+        println!("Parse email content directly from the command line");
+        println!("mercy -m email -p parse_email -i file.eml\n");
     } else {
         match args.method.as_str() {
 
             // Available arguments from the Mercy crate
-            "decode" => println!("{}",mercy::mercy_decode(&args.protocol, &args.input)),
-            "encode" => println!("{}", mercy::mercy_encode(&args.protocol, &args.input)),
-            "hash"   => println!("{}", mercy::mercy_hash(&args.protocol, &args.input)),
-            "hex"    => println!("{}", mercy::mercy_hex(&args.protocol, &args.input)),
-            "sys"    => println!("{}", mercy::mercy_extra(&args.protocol, &args.input)),
-            "ip"     => println!("{}", mercy::mercy_extra(&args.protocol, &args.input)),
-            "d"      => println!("{}", mercy::mercy_extra(&args.protocol, &args.input)),
-            "who"    => println!("{}", mercy::mercy_extra(&args.protocol, &args.input)),
-            "id"     => println!("{}", mercy::mercy_extra(&args.protocol, &args.input)),
-            "c"      => println!("{}", mercy::mercy_extra(&args.protocol, &args.input)),
-            "dg"     => mercy::mercy_experimental(&args.protocol, &args.input),
-            "zip_e"  => mercy::mercy_experimental(&args.protocol, &args.input),
-            "mal"    => println!("{}", mercy::mercy_malicious(&args.protocol, &args.input)),
+            "decode" => println!("{}",mercy::decode(&args.protocol, &args.input)),
+            "encode" => println!("{}", mercy::encode(&args.protocol, &args.input)),
+            "hash"   => println!("{}", mercy::hash(&args.protocol, &args.input)),
+            "hex"    => println!("{}", mercy::hex(&args.protocol, &args.input)),
+            "sys"    => println!("{}", mercy::extra(&args.protocol, &args.input)),
+            "ip"     => println!("{}", mercy::extra(&args.protocol, &args.input)),
+            "d"      => println!("{}", mercy::extra(&args.protocol, &args.input)),
+            "who"    => println!("{}", mercy::extra(&args.protocol, &args.input)),
+            "id"     => println!("{}", mercy::extra(&args.protocol, &args.input)),
+            "c"      => println!("{}", mercy::extra(&args.protocol, &args.input)),
+            "lang"   => println!("{}", mercy::extra(&args.protocol, &args.input)),
+            "email"  => println!("{}", mercy::extra(&args.protocol, &args.input)),
+            "dg"     => mercy::experimental(&args.protocol, &args.input),
+            "zip_e"  => mercy::experimental(&args.protocol, &args.input),
+            "mal"    => println!("{}", mercy::malicious(&args.protocol, &args.input)),
             _        => println!("Unable to parse provided arguments")
         }
     }

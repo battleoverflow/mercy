@@ -1,17 +1,17 @@
 //! # Mercy
 //!
-//! Mercy is an open source Rust crate and CLI designed for building cybersecurity tools, assessment projects, and immediate testing. The goal of the project is to make creating security tools in Rust more accessible and sustainable.
+//! Mercy is an open source Rust crate and CLI designed for building cybersecurity tools, assessment projects, and testing.
 //!
 //! | Function                | More Info                               |
 //! | ----------------------- | --------------------------------------- |
-//! | `mercy_source`          | Learn more about the crate              |
-//! | `mercy_decode`          | Supports: base64, rot13                 |
-//! | `mercy_encode`          | Supports: base64                        |
-//! | `mercy_hash`            | Supports: sha256, md5                   |
-//! | `mercy_hex`             | Dump hexadecimal values of a file       |
-//! | `mercy_malicious`       | Malware detection or malicious intent   |
-//! | `mercy_extra`           | Information about various data points   |
-//! | `mercy_experimental`    | Experimental functions for data control |
+//! | `source`          | Learn more about the crate              |
+//! | `decode`          | Supports: base64, rot13                 |
+//! | `encode`          | Supports: base64                        |
+//! | `hash`            | Supports: sha256, md5                   |
+//! | `hex`             | Dump hexadecimal values of a file       |
+//! | `malicious`       | Malware detection or malicious intent   |
+//! | `extra`           | Information about various data points   |
+//! | `experimental`    | Experimental functions for data control |
 //! 
 
 /*
@@ -60,8 +60,11 @@ use ares::{
     config::Config
 };
 
+use whatlang;
+use mailparse::*;
+
 /// Learn more about the crate
-pub fn mercy_source() -> String {
+pub fn source() -> String {
     const VERSION: &str = "1.2.22";
     const AUTHOR: &str = "azazelm3dj3d (https://github.com/azazelm3dj3d)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
@@ -70,7 +73,7 @@ pub fn mercy_source() -> String {
 /* Public decoding methods provided by Mercy */
 
 /// Supports: base64, rot13
-pub fn mercy_decode(mercy_call: &str, mercy_string: &str) -> String {
+pub fn decode(mercy_call: &str, mercy_string: &str) -> String {
     match mercy_call {
         "base64" => base64_decode(mercy_string.to_string()),
         "rot13" => rot13_decode(mercy_string.to_string()),
@@ -81,7 +84,7 @@ pub fn mercy_decode(mercy_call: &str, mercy_string: &str) -> String {
 /* Public encoding methods provided by Mercy */
 
 /// Supports: base64
-pub fn mercy_encode(mercy_call: &str, mercy_string: &str) -> String {
+pub fn encode(mercy_call: &str, mercy_string: &str) -> String {
     match mercy_call {
         "base64" => base64_encode(mercy_string.to_string()),
          _ => unknown_msg("Unable to encode message")
@@ -91,7 +94,7 @@ pub fn mercy_encode(mercy_call: &str, mercy_string: &str) -> String {
 /* Public hashing methods provided by Mercy */
 
 /// Supports: sha256, md5
-pub fn mercy_hash(mercy_call: &str, mercy_string: &str) -> String {
+pub fn hash(mercy_call: &str, mercy_string: &str) -> String {
     match mercy_call {
         "sha256" => sha256_hash(mercy_string.to_string()),
         "md5" => md5_hash(mercy_string.to_string()),
@@ -104,7 +107,7 @@ pub fn mercy_hash(mercy_call: &str, mercy_string: &str) -> String {
 /// Dump hexadecimal values of a file
 /// 
 /// `hex_dump` - Dumps hexadecimal data of a file
-pub fn mercy_hex(mercy_call: &str, mercy_file: &str) -> String {
+pub fn hex(mercy_call: &str, mercy_file: &str) -> String {
     match mercy_call {
         "hex_dump" => collect_file_hex(mercy_file),
         _ => unknown_msg("Unable to provide hexadecimal dump for file specified")
@@ -116,7 +119,7 @@ pub fn mercy_hex(mercy_call: &str, mercy_file: &str) -> String {
 /// Malware detection or malicious intent
 /// 
 /// `status` - Returns a status of 'malicious', 'unknown', or 'suspicious' from the InQuest API
-pub fn mercy_malicious(mercy_call: &str, mercy_domain: &str) -> String {
+pub fn malicious(mercy_call: &str, mercy_domain: &str) -> String {
     match mercy_call {
         "status" => malicious_domain_status(mercy_domain),
         _ => unknown_msg("Unable to classify domain")
@@ -135,10 +138,12 @@ pub fn mercy_malicious(mercy_call: &str, mercy_domain: &str) -> String {
 /// 
 /// `whois` - Returns WHOIS lookup information
 /// 
-/// `identify` - Attempt to identify an unknown string (requires a "." followed by an extension)
+/// `identify` - Attempt to identify an unknown string
 /// 
 /// `crack` - Attempt to crack an encrypted string
-pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
+/// 
+/// `detect_lang` - Attempt to detect the language in a string (beta)
+pub fn extra(mercy_call: &str, mercy_choose: &str) -> String {
     match mercy_call {
         "internal_ip" => internal_ip(),
         "system_info" => system_info(mercy_choose),
@@ -146,19 +151,21 @@ pub fn mercy_extra(mercy_call: &str, mercy_choose: &str) -> String {
         "whois" => whois_lookup(mercy_choose),
         "identify" => identify_str(mercy_choose),
         "crack" => crack_str(mercy_choose),
+        "detect_lang" => language_detection(mercy_choose),
+        "parse_email" => parse_email_content(mercy_choose),
         _ => unknown_msg("Unable to provide the information you requested")
     }
 }
 
 /* Experimental methods that do not require a `prinln!()`. Instead, you just call the method within the code for stdout. */
-// Example: mercy_experimental("zip", "/Users/name/Downloads/archive.zip");
+// Example: experimental("zip", "/Users/name/Downloads/archive.zip");
 
 /// Experimental functions that only accept stdout
 /// ### Methods
-/// `domain_gen` - Shuffle a provided string to construct a domain name
+/// `domain_gen` - Shuffle a provided string to construct a domain name (requires a "." followed by an extension)
 /// 
 /// `zip` - Extract a zip file
-pub fn mercy_experimental(mercy_call: &str, mercy_choose: &str) {
+pub fn experimental(mercy_call: &str, mercy_choose: &str) {
     match mercy_call {
         "domain_gen" => domain_gen(mercy_choose),
         "zip" => zip_extract(mercy_choose),
@@ -442,6 +449,31 @@ fn domain_gen(url: &str) {
     }
 }
 
+// Attempt to identify an unknown language (beta)
+fn language_detection(input: &str) -> String {
+    if let Some(info) = whatlang::detect_lang(&input) {
+        return info.to_string();
+    } else {
+        return "Unable to detect language".to_string();
+    }
+}
+
+// Quickly parse email content and return generic email values
+fn parse_email_content(content: &str) -> String {
+    let vec_binding = convert_file_to_vec(content);
+    let parse_content: ParsedMail = parse_mail(&vec_binding).unwrap();
+
+    let parsed_content: String = format!("Subject: {}\nFrom: {}\nTo: {}\nReturn Path: {}\nContent-Type: {}\nDate: {}",
+    parse_content.headers.get_first_value("Subject").unwrap().as_str(),
+    parse_content.headers.get_first_value("From").unwrap().as_str(),
+    parse_content.headers.get_first_value("To").unwrap().as_str(),
+    parse_content.headers.get_first_value("Return-Path").unwrap().as_str(),
+    parse_content.headers.get_first_value("Content-Type").unwrap().as_str(),
+    parse_content.headers.get_first_value("Date").unwrap().as_str());
+
+    return parsed_content;
+}
+
 fn unknown_msg(custom_msg: &str) -> String {
     return format!("{}", custom_msg);
 }
@@ -496,4 +528,14 @@ async fn url_request(url: &str) -> Result<String, Box<dyn std::error::Error>> {
     file.write_all(body.as_bytes()).expect("Failed to write to file");
 
     Ok(body)
+}
+
+// Helper function to convert a file's raw contents to a Vec<u8> to read as bytes
+fn convert_file_to_vec(file: &str) -> Vec<u8> {
+    let mut f = File::open(&file).expect("Unable to locate file");
+    let file_metadata = fs::metadata(&file).expect("Unable to read file metadata for buffer");
+    let mut buffer = vec![0; file_metadata.len() as usize];
+    f.read(&mut buffer).expect("Buffer overflow");
+
+    return buffer
 }
