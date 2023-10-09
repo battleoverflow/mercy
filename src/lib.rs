@@ -143,6 +143,8 @@ pub fn malicious(mercy_call: &str, mercy_domain: &str) -> String {
 /// `crack` - Attempt to crack an encrypted string
 /// 
 /// `detect_lang` - Attempt to detect the language in a string (beta)
+/// 
+/// `parse_email` - Extract email data from an .eml file
 pub fn extra(mercy_call: &str, mercy_choose: &str) -> String {
     match mercy_call {
         "internal_ip" => internal_ip(),
