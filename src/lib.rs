@@ -65,7 +65,7 @@ use mailparse::*;
 
 /// Learn more about the crate
 pub fn source() -> String {
-    const VERSION: &str = "2.0.0";
+    const VERSION: &str = "2.0.1";
     const AUTHOR: &str = "azazelm3dj3d (https://github.com/azazelm3dj3d)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
@@ -464,12 +464,12 @@ fn parse_email_content(content: &str) -> String {
     let parse_content: ParsedMail = parse_mail(&vec_binding).unwrap();
 
     let parsed_content: String = format!("Subject: {}\nFrom: {}\nTo: {}\nReturn Path: {}\nContent-Type: {}\nDate: {}",
-    parse_content.headers.get_first_value("Subject").unwrap().as_str(),
-    parse_content.headers.get_first_value("From").unwrap().as_str(),
-    parse_content.headers.get_first_value("To").unwrap().as_str(),
-    parse_content.headers.get_first_value("Return-Path").unwrap().as_str(),
-    parse_content.headers.get_first_value("Content-Type").unwrap().as_str(),
-    parse_content.headers.get_first_value("Date").unwrap().as_str());
+    parse_content.headers.get_first_value("Subject").unwrap_or("N/A".to_string()).as_str(),
+    parse_content.headers.get_first_value("From").unwrap_or("N/A".to_string()).as_str(),
+    parse_content.headers.get_first_value("To").unwrap_or("N/A".to_string()).as_str(),
+    parse_content.headers.get_first_value("Return-Path").unwrap_or("N/A".to_string()).as_str(),
+    parse_content.headers.get_first_value("Content-Type").unwrap_or("N/A".to_string()).as_str(),
+    parse_content.headers.get_first_value("Date").unwrap_or("N/A".to_string()).as_str());
 
     return parsed_content;
 }
