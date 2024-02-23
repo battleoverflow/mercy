@@ -5,7 +5,7 @@
 //! | Function                | More Info                               |
 //! | ----------------------- | --------------------------------------- |
 //! | `source`          | Learn more about the crate              |
-//! | `decode`          | Supports: base64, rot13                 |
+//! | `decode`          | Supports: base64, rot13, base32         |
 //! | `encode`          | Supports: base64                        |
 //! | `hash`            | Supports: sha256, md5                   |
 //! | `hex`             | Dump hexadecimal values of a file       |
@@ -41,6 +41,7 @@ use std::{
 use serde_json::Value;
 
 use base64;
+use base32;
 use md5;
 use sha2::{Sha256, Digest};
 use hexdump::hexdump;
@@ -65,9 +66,9 @@ use mailparse::*;
 
 /// Learn more about the crate
 pub fn source() -> String {
-    const VERSION: &str = "2.0.1";
+    const VERSION: &str = "2.0.2";
     const AUTHOR: &str = "azazelm3dj3d (https://github.com/azazelm3dj3d)";
-    return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
+    format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION)
 }
 
 /* Public decoding methods provided by Mercy */
@@ -77,6 +78,7 @@ pub fn decode(mercy_call: &str, mercy_string: &str) -> String {
     match mercy_call {
         "base64" => base64_decode(mercy_string.to_string()),
         "rot13" => rot13_decode(mercy_string.to_string()),
+        "base32" => base32_decode(mercy_string.to_string()),
          _ => unknown_msg("Unable to decode message")
     }
 }
@@ -185,7 +187,7 @@ fn base64_decode(encoded_msg: String) -> String {
     // Converts into a more readable format
     let final_out = String::from_utf8_lossy(&bytes);
 
-    return final_out.to_string();
+    final_out.to_string()
 }
 
 // rot13 decode
@@ -211,7 +213,18 @@ fn rot13_decode(encoded_msg: String) -> String {
         }
     }
     
-    return result_str.to_string();
+    result_str.to_string()
+}
+
+// Base32 decode
+pub fn base32_decode(encoded_msg: String) -> String {
+    // Converts into bytes
+    let bytes = base32::decode(base32::Alphabet::RFC4648 { padding: false }, encoded_msg.as_str()).expect("Unable to decode provided string");
+                        
+    // Converts into a more readable format
+    let final_out = String::from_utf8_lossy(&bytes);
+
+    final_out.to_string()
 }
 
 /* Encoding methods */
@@ -220,7 +233,7 @@ fn rot13_decode(encoded_msg: String) -> String {
 fn base64_encode(plaintext_msg: String) -> String {
     // Converts into bytes
     let encoded_msg = base64::encode(plaintext_msg.as_bytes());
-    return encoded_msg.to_string();
+    encoded_msg.to_string()
 }
 
 /* Hashing methods */
@@ -231,13 +244,13 @@ fn sha256_hash(plaintext_msg: String) -> String {
     run_hash.update(plaintext_msg.as_bytes());
 
     let hash = run_hash.finalize();
-    return format!("{:x}", hash);
+    format!("{:x}", hash)
 }
 
 // MD5 hash
 fn md5_hash(plaintext_msg: String) -> String {
     let hash = md5::compute(plaintext_msg.as_bytes());
-    return format!("{:x}", hash);
+    format!("{:x}", hash)
 }
 
 /* Extraction methods */
@@ -327,9 +340,9 @@ fn collect_file_hex(convert_file: &str) -> String {
     // convert_file requires an absolute path to work 100% of the time
     if Path::new(convert_file).exists() {
         // Dumps hex data to stdout
-        return format!("{:#?}", hexdump(&byte_to_vec(convert_file)));
+        format!("{:#?}", hexdump(&byte_to_vec(convert_file)))
     } else {
-        return format!("Unable to locate the file specified");
+        format!("Unable to locate the file specified")
     }
 }
 
@@ -340,7 +353,7 @@ fn internal_ip() -> String {
     let socket = UdpSocket::bind("0.0.0.0:0").expect("Unable to bind UDP socket");
     socket.connect("8.8.8.8:80").expect("Unable to connect to address");
     let addr = socket.local_addr().expect("Unable to return the socket address");
-    return addr.ip().to_string();
+    addr.ip().to_string()
 }
 
 // System information based on matching parameter
@@ -349,19 +362,19 @@ fn system_info(data: &str) -> String {
     let all_system_info = format!("\nHostname: {}\nNumber of CPU cores: {}\nCPU Fan Speed: {} MHz\nOperating System Release Version: {}\nNumber of Processes: {}\n", hostname().unwrap(), cpu_num().unwrap(), cpu_speed().unwrap(), os_release().unwrap(), proc_total().unwrap());
 
     match data {
-        "hostname" => return format!("Hostname: {}", hostname().unwrap()),
-        "cpu_cores" => return format!("Number of CPU cores: {}", cpu_num().unwrap()),
-        "cpu_speed" => return format!("CPU Fan Speed: {} MHz", cpu_speed().unwrap()),
-        "os_release" => return format!("Operating System Release Version: {}", os_release().unwrap()),
-        "proc" => return format!("Number of Processes: {}", proc_total().unwrap()),
-        "all" => return format!("{}", all_system_info),
-        _ => return format!("Unable to gather system information")
+        "hostname" => format!("Hostname: {}", hostname().unwrap()),
+        "cpu_cores" => format!("Number of CPU cores: {}", cpu_num().unwrap()),
+        "cpu_speed" => format!("CPU Fan Speed: {} MHz", cpu_speed().unwrap()),
+        "os_release" => format!("Operating System Release Version: {}", os_release().unwrap()),
+        "proc" => format!("Number of Processes: {}", proc_total().unwrap()),
+        "all" => format!("{}", all_system_info),
+        _ => format!("Unable to gather system information")
     }
 }
 
 // Basic defang for URLs and IP addresses (or any string with a '.')
 fn defang(ip_or_url: &str) -> String {
-    return ip_or_url.replace(".", "[.]")
+    ip_or_url.replace(".", "[.]")
 }
 
 // WHOIS lookup for domain information
@@ -376,12 +389,12 @@ fn whois_lookup(url: &str) -> String {
     stream.read_to_end(&mut whois_response).unwrap();
 
     let res_to_str = from_utf8(&whois_response).unwrap();
-    return res_to_str.to_string();
+    res_to_str.to_string()
 }
 
 // Attempt to identify an unknown string
 fn identify_str(data: &str) -> String {
-    return Identifier::to_json(&Identifier::default().identify(data));
+    Identifier::to_json(&Identifier::default().identify(data))
 }
 
 // Attempt to crack an encrypted string
@@ -396,17 +409,16 @@ fn crack_str(data: &str) -> String {
 
     if !result.is_none() {
         match result {
-            Some(result) => return format!("{:?}", result.text),
-            _ => return "Unable to crack string".to_string()
+            Some(result) => format!("{:?}", result.text),
+            _ => "Unable to crack string".to_string()
         }
     } else {
-        return "Result is None".to_string()
+        "Result is None".to_string()
     }
 }
 
 // Domain generation
 fn domain_gen(url: &str) {
-
     let common_exts = [".com", ".io", ".co", ".ai", ".moe", ".org", ".edu", ".net", ".biz", ".ru", ".uk", ".au", ".de", ".in"];
 
     for i in 0..url.len() {
@@ -454,9 +466,9 @@ fn domain_gen(url: &str) {
 // Attempt to identify an unknown language (beta)
 fn language_detection(input: &str) -> String {
     if let Some(info) = whatlang::detect_lang(&input) {
-        return info.to_string();
+        info.to_string()
     } else {
-        return "Unable to detect language".to_string();
+        "Unable to detect language".to_string()
     }
 }
 
@@ -473,11 +485,11 @@ fn parse_email_content(content: &str) -> String {
     parse_content.headers.get_first_value("Content-Type").unwrap_or("N/A".to_string()).as_str(),
     parse_content.headers.get_first_value("Date").unwrap_or("N/A".to_string()).as_str());
 
-    return parsed_content;
+    parsed_content
 }
 
 fn unknown_msg(custom_msg: &str) -> String {
-    return format!("{}", custom_msg);
+    format!("{}", custom_msg)
 }
 
 /* Malicious Detection */
@@ -500,13 +512,13 @@ async fn malicious_domain_status(domain: &str) -> String {
     fs::remove_file("/tmp/mercy_domain_review.json").unwrap();
 
     if &json_parse["data"][0]["classification"] == "MALICIOUS" {
-        return "Malicious".to_string();
+        "Malicious".to_string()
     } else if &json_parse["data"][0]["classification"] == "UNKNOWN" {
-        return "Unknown".to_string();
+        "Unknown".to_string()
     } else if &json_parse["data"][0]["classification"] == "SUSPICIOUS" {
-        return "Suspicious".to_string();
+        "Suspicious".to_string()
     } else {
-        return "No classification available".to_string();
+        "No classification available".to_string()
     }
 }
 
@@ -539,5 +551,5 @@ fn convert_file_to_vec(file: &str) -> Vec<u8> {
     let mut buffer = vec![0; file_metadata.len() as usize];
     f.read(&mut buffer).expect("Buffer overflow");
 
-    return buffer
+    buffer
 }

@@ -67,7 +67,7 @@ fn main() {
     // Extended help section for new users
     if args.extended {
         println!("\n=== Mercy CLI ===");
-        pretty_output("encode\ndecode\nhash\nhex\nsys\nip\nmal\nd\nwho\nid\nc\nlang\nemail\ndg\nzip_e", "base64, rot13\nbase64, rot13\nmd5, sha2_256\nhex_dump\nsystem_info\ninternal_ip\nstatus\ndefang\nwhois\nidentify\ncrack\ndetect_lang\nparse_email\ndomain_gen\nzip", "Method(s)", "Protocol(s)");
+        pretty_output("encode\ndecode\nhash\nhex\nsys\nip\nmal\nd\nwho\nid\nc\nlang\nemail\ndg\nzip_e", "base64, rot13\nbase64, rot13, base32\nmd5, sha2_256\nhex_dump\nsystem_info\ninternal_ip\nstatus\ndefang\nwhois\nidentify\ncrack\ndetect_lang\nparse_email\ndomain_gen\nzip", "Method(s)", "Protocol(s)");
 
         println!("\n=== Mercy CLI Extended ===");
         pretty_output("system_info", "hostname\ncpu_cores\ncpu_speed\nos_release\nproc\nall", "Protocol(s)", "Input(s)");
