@@ -4,8 +4,8 @@
 //! 
 
 /*
-    Project: Mercy (https://github.com/azazelm3dj3d/mercy)
-    Author(s): azazelm3dj3d (https://github.com/azazelm3dj3d)
+    Project: Mercy (https://github.com/battleoverflow/mercy)
+    Author(s): battleoverflow (https://github.com/battleoverflow)
     License: BSD 2-Clause
 */
 

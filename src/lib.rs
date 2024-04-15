@@ -15,8 +15,8 @@
 //! 
 
 /*
-    Project: Mercy (https://github.com/azazelm3dj3d/mercy)
-    Author(s): azazelm3dj3d (https://github.com/azazelm3dj3d)
+    Project: Mercy (https://github.com/battleoverflow/mercy)
+    Author(s): battleoverflow (https://github.com/battleoverflow)
     License: BSD 2-Clause
 */
 
@@ -65,8 +65,8 @@ use mailparse::*;
 
 /// Learn more about the crate
 pub fn source() -> String {
-    const VERSION: &str = "2.0.1";
-    const AUTHOR: &str = "azazelm3dj3d (https://github.com/azazelm3dj3d)";
+    const VERSION: &str = "2.0.2";
+    const AUTHOR: &str = "battleoverflow (https://github.com/battleoverflow)";
     return format!("Author: {}\nVersion: {}\nDocumentation: https://docs.rs/crate/mercy/latest", AUTHOR, VERSION);
 }
 

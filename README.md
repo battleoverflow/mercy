@@ -1,10 +1,10 @@
 <h1 align="center">
-    <img src="https://raw.githubusercontent.com/azazelm3dj3d/mercy/main/assets/mercy_icon.png" width="40%" />
+    <img src="https://raw.githubusercontent.com/battleoverflow/mercy/main/assets/mercy_icon.png" width="40%" />
 </h1>
 
 📚 [Documentation](https://docs.rs/mercy/latest/mercy/)
 
-![Workflow](https://github.com/azazelm3dj3d/mercy/actions/workflows/workflow.yml/badge.svg?branch=main)
+![Workflow](https://github.com/battleoverflow/mercy/actions/workflows/workflow.yml/badge.svg?branch=main)
 
 Mercy is an open source Rust crate and CLI designed for building cybersecurity tools, assessment projects, and testing. The goal of the project is to make creating security tools in Rust more accessible and sustainable without complex algorithms.
 
@@ -12,7 +12,7 @@ Mercy is an open source Rust crate and CLI designed for building cybersecurity t
 Since Mercy is a standard crate, it can easily be used in any project already initialized with Cargo. Simply add the following line to your `Cargo.toml` file:
 
 ```toml
-mercy = "2.0.1"
+mercy = "2.0.2"
 ```
 
 Once the `Cargo.toml` file is updated, you can import the crate and use the provided methods by running `cargo run`. There are lots of different examples available below.
@@ -24,8 +24,8 @@ Here's a quick example of decoding and encoding using the base64 protocol:
 use mercy::{ decode, encode };
 
 fn main() {
-    // Encode string "azazelm3dj3d"
-    encode("base64", "azazelm3dj3d");
+    // Encode string "battleoverflow"
+    encode("base64", "battleoverflow");
     
     // Decode string "YXphemVsbGFicw=="
     decode("base64", "YXphemVsbGFicw==");
@@ -44,13 +44,13 @@ fn main() {
 ```
 
 ### Malware/Malicious Detection
-You can check if a domain (i.e. azazelm3dj3d.com) is currently classified as malicious using the InQuest API:
+You can check if a domain (i.e. example.com) is currently classified as malicious using the InQuest API:
 
 ```rust
 use mercy::malicious;
 
 fn main() {
-    malicious("status", "azazelm3dj3d.com");
+    malicious("status", "example.com");
 }
 ```
 
@@ -69,10 +69,10 @@ fn main() {
     extra("system_info", "all");
 
     // Defang an ip address or domain
-    extra("defang", "azazelm3dj3d.com");
+    extra("defang", "example.com");
 
     // Run a WHOIS lookup on a domain
-    extra("whois", "azazelm3dj3d.com");
+    extra("whois", "example.com");
 
     // Attempt to identify an unknown string
     extra("identify", "UCrlEbqe4ppk5dVIHzdxtC7g");
@@ -175,7 +175,7 @@ mercy -m ip -p internal_ip
 
 Quickly check if a domain is malicious.
 ```bash
-mercy -m mal -p status -i "azazelm3dj3d.com"
+mercy -m mal -p status -i "example.com"
 ```
 
 Extract a zip file.
@@ -183,7 +183,7 @@ Extract a zip file.
 mercy -m zip_e -p zip -i "/Users/name/Downloads/archive.zip"
 ```
 
-If you're stuck, you can use this option to learn every command at your disposal from [Mercy](https://github.com/azazelm3dj3d/mercy):
+If you're stuck, you can use this option to learn every command at your disposal from [Mercy](https://github.com/battleoverflow/mercy):
 ```bash
 mercy -e
 ```

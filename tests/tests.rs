@@ -6,19 +6,19 @@ use mercy;
 
 #[test]
 fn decodes_values() {
-    assert_eq!(mercy::decode("base64", "YXphemVsbTNkajNk"), "azazelm3dj3d");
-    assert_eq!(mercy::decode("rot13", "nmnmryz3qw3q"), "azazelm3dj3d");
+    assert_eq!(mercy::decode("base64", "YmF0dGxlb3ZlcmZsb3c="), "battleoverflow");
+    assert_eq!(mercy::decode("rot13", "onggyrbiresybj"), "battleoverflow");
 }
 
 #[test]
 fn encodes_values() {
-    assert_eq!(mercy::encode("base64", "azazelm3dj3d"), "YXphemVsbTNkajNk");
+    assert_eq!(mercy::encode("base64", "battleoverflow"), "YmF0dGxlb3ZlcmZsb3c=");
 }
 
 #[test]
 fn hashes_values() {
-    assert_eq!(mercy::hash("sha256", "azazelm3dj3d"), "88172dfbf2e8c6aa00bdbd9611ffc72b3910be1fac0ef2c43196502022df8cfa");
-    assert_eq!(mercy::hash("md5", "azazelm3dj3d"), "4f85ebc7ef03bf7de13dd609f7b6a637");
+    assert_eq!(mercy::hash("sha256", "battleoverflow"), "504543ca9f14824a934f7a6e76fac178cbf6652d2589edf664baf6479295a637");
+    assert_eq!(mercy::hash("md5", "battleoverflow"), "4ce35faf1f8881ef6bfcedbd07e82fd2");
 }
 
 /*
@@ -37,7 +37,7 @@ fn dumps_hex_values() {
 
 #[test]
 fn malicious_status_test() {
-    assert_eq!(mercy::malicious("status", "https://azazelm3dj3d.com"), "No classification available");
+    assert_eq!(mercy::malicious("status", "https://example.com"), "No classification available");
 }
 
 /*
@@ -46,5 +46,5 @@ fn malicious_status_test() {
 
 #[test]
 fn extra_and_experimental_tests() {
-    assert_eq!(mercy::extra("defang", "https://azazelm3dj3d.com"), "https://azazelm3dj3d[.]com");
+    assert_eq!(mercy::extra("defang", "https://example.com"), "https://example[.]com");
 }
